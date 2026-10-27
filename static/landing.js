@@ -98,7 +98,7 @@
         verify_token: S.token, category: PM.category, name: $("fName").value.trim(), phone: $("fPhone").value,
         sido: S.addr.sido, sigungu: S.addr.sigungu, dong: S.addr.dong, addr: S.addr.addr, addr2: $("fAddr2").value.trim(),
         req: S.req.startsWith("기타") ? "기타" : S.req, note: $("fMemo").value.trim(),
-        compare_ok: $("fCompare").checked, landing: PM.slug, source: new URLSearchParams(location.search).get("src") || "",
+        landing: PM.slug, source: new URLSearchParams(location.search).get("src") || "",
         website: $("website").value,
       });
       showDone(r);
