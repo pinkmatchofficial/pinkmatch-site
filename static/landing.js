@@ -59,6 +59,7 @@
     const phone = $("fPhone").value;
     if (!/^010-\d{4}-\d{4}$/.test(phone)) { err("휴대폰 번호를 다시 확인해주세요."); return; }
     if (PM.preview) { $("codeWrap").hidden = false; toast("미리보기 화면이라 실제 문자는 발송되지 않아요"); return; }
+    if (PM.closed) { toast("온라인 접수는 곧 열려요. 조금만 기다려주세요."); return; }
     if (cool > 0) return;
     try {
       $("sendCode").disabled = true;
@@ -71,7 +72,7 @@
   async function checkCode() {
     const code = $("fCode").value.replace(/\D/g, "");
     if (code.length !== 6) { err("인증번호 6자리를 입력해주세요."); return; }
-    if (PM.preview) { toast("미리보기 화면이에요"); return; }
+    if (PM.preview || PM.closed) { toast("온라인 접수는 준비 중이에요."); return; }
     try {
       const r = await api("/api/verify/check", { phone: $("fPhone").value, code });
       S.token = r.token; $("codeWrap").hidden = true; $("verified").hidden = false; err("");
@@ -89,6 +90,7 @@
     if (!$("fName").value.trim()) { err("이름을 입력해주세요."); return; }
     if (!$("fAgree").checked) { err("개인정보 수집·이용 및 제공에 동의해주세요."); return; }
     if (PM.preview) { err(""); toast("오픈 준비 중인 미리보기 화면이에요. 아직 실제 접수는 되지 않아요."); return; }
+    if (PM.closed) { err(""); toast("온라인 접수는 곧 열려요. 조금만 기다려주세요."); return; }
     if (!S.token) { err("휴대폰 인증을 먼저 해주세요."); return; }
     S.sending = true; $("submitBtn").disabled = true; err("");
     try {
