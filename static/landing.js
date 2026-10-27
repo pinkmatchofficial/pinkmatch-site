@@ -17,6 +17,40 @@
   }
   const fmtPhone = (v) => { const d = v.replace(/\D/g, "").slice(0, 11); return d.length < 4 ? d : d.length < 8 ? d.slice(0, 3) + "-" + d.slice(3) : d.slice(0, 3) + "-" + d.slice(3, 7) + "-" + d.slice(7); };
 
+  // 유입 경로 기억 (광고 꼬리표·이전 페이지). 광고로 다시 들어오면 새 값으로 바뀜, 30일 보관
+  const SRC = (() => {
+    const q = new URLSearchParams(location.search), g = (k) => (q.get(k) || "").trim();
+    let saved = null; try { saved = JSON.parse(localStorage.getItem("pm_src") || "null"); } catch (e) {}
+    if (saved && Date.now() - (saved.t || 0) > 30 * 864e5) saved = null;
+    const ref = document.referrer && !document.referrer.includes(location.hostname) ? document.referrer : "";
+    let host = ""; try { host = ref ? new URL(ref).hostname : ""; } catch (e) {}
+    const now = { kw: g("n_keyword") || g("utm_term") || g("keyword"), query: g("n_query"),
+      campaign: [g("n_campaign") || g("utm_campaign"), g("n_ad_group")].filter(Boolean).join(" / "),
+      media: "", ref: ref.slice(0, 200), device: /Mobi|Android|iPhone/i.test(navigator.userAgent) ? "모바일" : "PC" };
+    if (g("n_media") || g("n_keyword") || g("n_query")) now.media = g("n_campaign_type") === "2" ? "네이버 쇼핑검색" : "네이버 파워링크";
+    else if (g("gclid") || g("gad_source")) now.media = "구글 광고";
+    else if (g("utm_source")) now.media = g("utm_source") + (g("utm_medium") ? " / " + g("utm_medium") : "");
+    else if (g("src")) now.media = g("src");
+    else if (/naver\./.test(host)) now.media = "네이버 검색(자연)";
+    else if (/google\./.test(host)) now.media = "구글 검색(자연)";
+    else if (/daum\.|kakao\./.test(host)) now.media = "다음·카카오";
+    else if (/youtube\.|youtu\.be/.test(host)) now.media = "유튜브";
+    else if (/instagram\.|facebook\./.test(host)) now.media = "인스타그램·페이스북";
+    else if (host) now.media = host;
+    // 이번 방문에 광고 꼬리표나 바깥 사이트가 있으면 그 값으로, 없으면 전에 기억한 값 (마지막 유입 기준)
+    const src = now.media ? { ...now, t: Date.now() } : (saved || { ...now, media: "직접 방문", t: Date.now() });
+    src.device = now.device;
+    try { localStorage.setItem("pm_src", JSON.stringify(src)); } catch (e) {}
+    const { t, ...out } = src; return out;
+  })();
+  // 전화 버튼 클릭 기록 (통화 기록과 시간으로 맞춰 키워드 추정)
+  document.querySelectorAll('a[href^="tel:"]').forEach((a) => a.addEventListener("click", () => {
+    if (PM.preview) return;
+    const body = JSON.stringify({ landing: PM.slug, src: SRC });
+    try { if (!navigator.sendBeacon(PM.api + "/api/click", new Blob([body], { type: "text/plain" }))) throw 0; }
+    catch (e) { fetch(PM.api + "/api/click", { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" }, body, keepalive: true }).catch(() => {}); }
+  }));
+
   // 심야 안내
   $("nightNotice").hidden = !isNight();
 
@@ -98,7 +132,7 @@
         verify_token: S.token, category: PM.category, name: $("fName").value.trim(), phone: $("fPhone").value,
         sido: S.addr.sido, sigungu: S.addr.sigungu, dong: S.addr.dong, addr: S.addr.addr, addr2: $("fAddr2").value.trim(),
         req: S.req.startsWith("기타") ? "기타" : S.req, note: $("fMemo").value.trim(),
-        landing: PM.slug, source: new URLSearchParams(location.search).get("src") || "",
+        landing: PM.slug, source: new URLSearchParams(location.search).get("src") || "", src: SRC,
         website: $("website").value,
       });
       showDone(r);
