@@ -125,3 +125,8 @@ input:focus,textarea:focus{border-color:var(--accent);outline:none;box-shadow:0 
 .rgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:6px}
 .rgrid a{display:block;text-align:center;padding:9px 6px;border:1px solid var(--line);border-radius:10px;font-size:14px;color:inherit;text-decoration:none;background:#fff}
 .rgrid a:hover{border-color:var(--accent);color:var(--accent-deep)}
+
+.foot .foot-note{font-size:11.5px;line-height:1.55}
+.foot-op{margin:2px 0 6px}
+.foot-op summary{cursor:pointer;font-size:12px;display:inline-block;text-decoration:underline;text-underline-offset:2px}
+.foot-op p{margin:6px 0 0}
