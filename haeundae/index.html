@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#D6336C">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="/static/landing.css?v=1793074672">
+<link rel="stylesheet" href="/static/landing.css?v=1793081822">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/static/icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
@@ -52,13 +52,9 @@
       </div>
       <label id="memoWrap" hidden>어떤 문제인지 적어주세요<textarea id="fMemo" rows="3" maxlength="200" placeholder="예: 베란다 배수구에서 물이 역류해요"></textarea></label>
       <label>이름<input id="fName" maxlength="40" autocomplete="name"></label>
-      <label>휴대폰 번호
-        <span class="inl"><input id="fPhone" inputmode="tel" maxlength="13" autocomplete="tel" placeholder="010-0000-0000"><button type="button" class="btn sm ghost" id="sendCode">인증번호</button></span>
-      </label>
-      <label id="codeWrap" hidden>인증번호 6자리
-        <span class="inl"><input id="fCode" inputmode="numeric" maxlength="6" autocomplete="one-time-code"><button type="button" class="btn sm ghost" id="checkCode">확인</button></span>
-      </label>
-      <span id="verified" class="pill good" hidden>✓ 휴대폰 인증 완료</span>
+      
+      <label>휴대폰 번호<input id="fPhone" inputmode="tel" maxlength="13" autocomplete="tel" placeholder="010-0000-0000"></label>
+      
       <input type="text" id="website" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true">
       <label class="check-row"><input type="checkbox" id="fAgree"><span>상담을 위한 개인정보 수집·이용 및 담당 업체 제공에 동의합니다 (필수) <a href="/privacy/" target="_blank">보기</a></span></label>
       <span class="err" id="formErr" role="alert" hidden></span>
@@ -121,7 +117,7 @@
   <button type="button" class="d-form" id="dockForm">상담 접수</button>
 </div></div>
 <div class="toast" id="toast" role="status"></div>
-<script>window.PM={"slug": "haeundae", "label": "해운대", "sido": "부산", "gu": "해운대구", "gu_short": "해운대구", "category": "배관", "api": "https://app.pinkmatch.kr", "preview": false, "closed": true, "photos": []};</script>
+<script>window.PM={"slug": "haeundae", "label": "해운대", "sido": "부산", "gu": "해운대구", "gu_short": "해운대구", "category": "배관", "api": "https://app.pinkmatch.kr", "preview": false, "closed": true, "verify": false, "photos": []};</script>
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js" defer></script>
-<script src="/static/landing.js?v=1793074672" defer></script>
+<script src="/static/landing.js?v=1793081822" defer></script>
 </body></html>

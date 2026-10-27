@@ -87,7 +87,8 @@
   $("postClose").onclick = () => ($("postLayer").hidden = true);
 
   // 휴대폰 인증
-  $("fPhone").addEventListener("input", (e) => { e.target.value = fmtPhone(e.target.value); if (S.token) { S.token = ""; $("verified").hidden = true; } });
+  $("fPhone").addEventListener("input", (e) => { e.target.value = fmtPhone(e.target.value); if (S.token && $("verified")) { S.token = ""; $("verified").hidden = true; } });
+  if (PM.verify) {
   let cool = 0;
   $("sendCode").onclick = async () => {
     const phone = $("fPhone").value;
@@ -114,6 +115,7 @@
   }
   $("checkCode").onclick = checkCode;
   $("fCode").addEventListener("input", (e) => { e.target.value = e.target.value.replace(/\D/g, ""); if (e.target.value.length === 6) checkCode(); });
+  }
 
   // 접수
   $("leadForm").addEventListener("submit", async (e) => {
@@ -125,11 +127,12 @@
     if (!$("fAgree").checked) { err("개인정보 수집·이용 및 제공에 동의해주세요."); return; }
     if (PM.preview) { err(""); toast("오픈 준비 중인 미리보기 화면이에요. 아직 실제 접수는 되지 않아요."); return; }
     if (PM.closed) { err(""); toast("온라인 접수는 곧 열려요. 조금만 기다려주세요."); return; }
-    if (!S.token) { err("휴대폰 인증을 먼저 해주세요."); return; }
+    if (!/^01[016789]-\d{3,4}-\d{4}$/.test($("fPhone").value)) { err("휴대폰 번호를 다시 확인해주세요."); return; }
+    if (PM.verify && !S.token) { err("휴대폰 인증을 먼저 해주세요."); return; }
     S.sending = true; $("submitBtn").disabled = true; err("");
     try {
       const r = await api("/api/leads", {
-        verify_token: S.token, category: PM.category, name: $("fName").value.trim(), phone: $("fPhone").value,
+        verify_token: S.token || "", category: PM.category, name: $("fName").value.trim(), phone: $("fPhone").value,
         sido: S.addr.sido, sigungu: S.addr.sigungu, dong: S.addr.dong, addr: S.addr.addr, addr2: $("fAddr2").value.trim(),
         req: S.req.startsWith("기타") ? "기타" : S.req, note: $("fMemo").value.trim(),
         landing: PM.slug, source: new URLSearchParams(location.search).get("src") || "", src: SRC,
