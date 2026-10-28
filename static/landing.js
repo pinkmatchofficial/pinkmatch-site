@@ -49,9 +49,16 @@
     try { localStorage.setItem("pm_src", JSON.stringify(src)); } catch (e) {}
     const { t, ...out } = src; return out;
   })();
+  // 구글 광고 전환 (라벨이 설정된 것만)
+  function gconv(kind) {
+    const to = (window.PM_GADS || {})[kind];
+    if (!to || typeof gtag !== "function") return;
+    try { gtag("event", "conversion", { send_to: to, value: 10000, currency: "KRW", transport_type: "beacon" }); } catch (e) {}
+  }
   // 전화 버튼 클릭 기록 (통화 기록과 시간으로 맞춰 키워드 추정)
   document.querySelectorAll('a[href^="tel:"]').forEach((a) => a.addEventListener("click", () => {
     if (PM.preview) return;
+    gconv("call");
     const body = JSON.stringify({ landing: PM.slug, src: SRC });
     try { if (!navigator.sendBeacon(PM.api + "/api/click", new Blob([body], { type: "text/plain" }))) throw 0; }
     catch (e) { fetch(PM.api + "/api/click", { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" }, body, keepalive: true }).catch(() => {}); }
@@ -157,6 +164,7 @@
         landing: PM.slug, source: new URLSearchParams(location.search).get("src") || "", src: SRC,
         website: $("website").value,
       });
+      if (!(r.status === "free" && r.reason === "중복 문의")) gconv("lead");
       showDone(r);
     } catch (e2) { err(e2.message); }
     finally { S.sending = false; $("submitBtn").disabled = false; }
