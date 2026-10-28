@@ -28,7 +28,7 @@ p{margin:0}
 .logo .k{color:var(--fg)}
 .reel{overflow:hidden;margin:-14px -18px 0;padding:10px 0;background:var(--accent-softer);border-bottom:1px solid var(--line);-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
 .reel-track{display:flex;gap:8px;width:max-content;animation:reel 38s linear infinite}
-.reel figure{margin:0;width:92px;height:68px;border-radius:12px;overflow:hidden;position:relative;flex:none;background:#3a2a2f}
+.reel figure{margin:0;width:128px;height:96px;border-radius:12px;overflow:hidden;position:relative;flex:none;background:#3a2a2f}
 .reel canvas,.reel img{width:100%;height:100%;display:block;object-fit:cover}
 .reel figcaption{position:absolute;left:6px;bottom:4px;font-size:10.5px;font-weight:600;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.6)}
 @keyframes reel{from{transform:translateX(0)}to{transform:translateX(-50%)}}
@@ -43,6 +43,9 @@ p{margin:0}
 .pill.good{background:var(--good-soft);color:var(--good)}
 .notice{border-radius:14px;padding:12px 14px;font-size:14px;background:var(--warn-soft)}
 .notice b{color:var(--warn)}
+.notice.live{background:var(--accent-soft)}
+.notice.live b{color:var(--accent-deep)}
+[hidden]{display:none!important}
 .call{position:relative;isolation:isolate;display:flex;align-items:center;justify-content:center;gap:12px;font-weight:700;font-size:19px;border-radius:18px;padding:18px 16px;background:var(--accent);color:#fff;text-decoration:none}
 .call::before{content:"";position:absolute;inset:0;border-radius:inherit;background:var(--accent);z-index:-1;animation:callPulse 2.4s ease-out infinite}
 .call svg{animation:callRing 2.4s ease-in-out infinite}
@@ -130,3 +133,9 @@ input:focus,textarea:focus{border-color:var(--accent);outline:none;box-shadow:0 
 .foot-op{margin:2px 0 6px}
 .foot-op summary{cursor:pointer;font-size:12px;display:inline-block;text-decoration:underline;text-underline-offset:2px}
 .foot-op p{margin:6px 0 0}
+
+.work-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.work-grid figure{margin:0;position:relative;border-radius:14px;overflow:hidden;aspect-ratio:4/3;background:#3a2a2f}
+.work-grid img{width:100%;height:100%;object-fit:cover;display:block}
+.work-grid figcaption{position:absolute;left:0;right:0;bottom:0;padding:16px 10px 7px;font-size:12.5px;font-weight:700;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.6))}
+@media(min-width:640px){.work-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}

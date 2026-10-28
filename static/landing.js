@@ -2,13 +2,18 @@
 (function () {
   const PM = window.PM;
   const $ = (id) => document.getElementById(id);
-  const REQS = ["변기", "싱크대", "하수구", "세면대", "욕조", "세탁실", "기타 (직접 입력)"];
+  const REQS = ["변기", "싱크대", "하수구", "세면대", "욕조", "세탁실", "베란다", "기타 (직접 입력)"];
   const S = { req: "변기", addr: null, token: "", sending: false };
 
   function toast(m) { const t = $("toast"); t.textContent = m; t.classList.add("show"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 2600); }
   function err(m) { const e = $("formErr"); e.textContent = m; e.hidden = !m; }
   function kstHour() { return Number(new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Seoul", hour: "numeric", hourCycle: "h23" }).format(new Date())); }
-  const isNight = () => { const h = kstHour(); return h >= 22 || h < 8; };
+  // 전화 받는 시간 [시작, 끝] (예: 6시~새벽 1시). 그 밖(새벽)은 온라인 접수만
+  const HRS = (PM.hours && PM.hours.length === 2) ? PM.hours : [0, 0];
+  const inRange = (h, a, b) => a === b ? true : (a < b ? h >= a && h < b : h >= a || h < b);
+  const isPhoneTime = () => inRange(kstHour(), HRS[0], HRS[1]);
+  const isLate = () => isPhoneTime() && inRange(kstHour(), 22, HRS[1] || 24);
+  const isNight = () => !isPhoneTime();
   async function api(path, body) {
     const r = await fetch(PM.api + path, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
     let data = {}; try { data = await r.json(); } catch (e) {}
@@ -52,8 +57,21 @@
     catch (e) { fetch(PM.api + "/api/click", { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" }, body, keepalive: true }).catch(() => {}); }
   }));
 
-  // 심야 안내
-  $("nightNotice").hidden = !isNight();
+  // 시간대별 화면: 전화 시간엔 전화만(22시~끝시엔 '지금도 출동 가능' 띠), 새벽엔 전화 숨기고 온라인 접수만
+  function applyHours() {
+    const phone = isPhoneTime(), hasCall = !!$("callWrap");
+    $("nightNotice").hidden = phone;
+    $("lateNotice").hidden = !(phone && isLate());
+    if (hasCall) {
+      $("callWrap").hidden = !phone;
+      if ($("dockCall")) $("dockCall").hidden = !phone;
+      $("formCard").hidden = phone ? true : !$("doneCard").hidden;
+      $("dockForm").hidden = phone;
+      $("dock").querySelector(".in").classList.toggle("one", true);
+      $("dockNote").textContent = phone ? "전화 상담 오전 6시 ~ 새벽 1시" : "지금은 온라인으로 남겨 주세요";
+    }
+  }
+  applyHours(); setInterval(applyHours, 60000);
 
   // 문제 선택
   function renderReq() {
@@ -150,7 +168,7 @@
     if (r.status === "free" && r.reason === "중복 문의") { title = "이미 접수된 문의가 있어요"; p = "같은 번호로 접수된 문의가 있어 그 문의로 연락드립니다."; }
     else if (r.status === "free" && r.reason === "서비스 지역 아님") { title = "아직 준비 중인 지역이에요"; p = "입력하신 주소는 아직 기사님이 없는 지역이에요. 불편을 드려 죄송합니다."; }
     $("doneT").textContent = title; $("doneP").textContent = p;
-    $("doneWhen").textContent = night ? "내일 오전 가장 먼저 연락드립니다" : "곧 연락드립니다";
+    $("doneWhen").textContent = night ? "오전 6시부터 가장 먼저 연락드립니다" : "곧 연락드립니다";
     $("formCard").hidden = true; $("doneCard").hidden = false;
     $("doneCard").scrollIntoView({ behavior: "smooth", block: "start" });
   }
