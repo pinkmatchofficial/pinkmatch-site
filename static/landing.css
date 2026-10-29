@@ -169,3 +169,9 @@ input:focus,textarea:focus{border-color:var(--accent);outline:none;box-shadow:0 
 #formCard{margin-top:0}
 .day-hint{margin:-2px 0 -6px}
 #formCard{position:relative} #formCard > .anchor{position:absolute;top:-70px}
+.promo .p4{background:#2b2528;color:#fff}
+.promo{gap:5px;flex-wrap:nowrap}
+.promo span{font-size:clamp(12px,3.6vw,15px);padding:6px clamp(8px,2.6vw,14px)}
+.promo{gap:4px}
+.promo span{font-size:clamp(11px,3.3vw,15px);padding:6px clamp(7px,2.05vw,14px);letter-spacing:-.4px}
+@media (max-width:340px){.promo span{font-size:10.5px;padding:5px 6px}}
