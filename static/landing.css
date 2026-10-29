@@ -146,3 +146,11 @@ input:focus,textarea:focus{border-color:var(--accent);outline:none;box-shadow:0 
 .promo .p2{background:#FFE14D;color:#8C1D45}
 .promo .p3{background:#fff;color:#C22660;border:1.5px solid #F3B4C9}
 @media (max-width:360px){.promo span{font-size:13.5px;padding:5px 11px}}
+.why i svg{width:22px;height:22px;fill:none;stroke:var(--accent);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.flow{list-style:none;margin:0;padding:0;counter-reset:f;display:flex;flex-direction:column;gap:0}
+.flow li{counter-increment:f;position:relative;padding:0 0 16px 44px;display:flex;flex-direction:column;gap:2px}
+.flow li::before{content:counter(f);position:absolute;left:0;top:-2px;width:30px;height:30px;border-radius:50%;background:var(--accent);color:#fff;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center}
+.flow li:not(:last-child)::after{content:"";position:absolute;left:14.5px;top:30px;bottom:2px;width:1.5px;background:var(--accent-soft)}
+.flow li:last-child{padding-bottom:0}
+.flow b{font-size:15px} .flow span{font-size:13.5px;color:var(--muted)}
+.ptable .pfree{background:var(--accent-softer)} .ptable .pfree b{color:var(--accent)}
