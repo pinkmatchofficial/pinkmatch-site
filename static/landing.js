@@ -59,6 +59,7 @@
   document.querySelectorAll('a[href^="tel:"]').forEach((a) => a.addEventListener("click", () => {
     if (PM.preview) return;
     gconv("call");
+    if (window.pmNaverConv) window.pmNaverConv("custom001");  // 네이버: 전화 버튼 클릭
     const body = JSON.stringify({ landing: PM.slug, src: SRC });
     try { if (!navigator.sendBeacon(PM.api + "/api/click", new Blob([body], { type: "text/plain" }))) throw 0; }
     catch (e) { fetch(PM.api + "/api/click", { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" }, body, keepalive: true }).catch(() => {}); }
@@ -164,7 +165,7 @@
         landing: PM.slug, source: new URLSearchParams(location.search).get("src") || "", src: SRC,
         website: $("website").value,
       });
-      if (!(r.status === "free" && r.reason === "중복 문의")) gconv("lead");
+      if (!(r.status === "free" && r.reason === "중복 문의")) { gconv("lead"); if (window.pmNaverConv) window.pmNaverConv("lead"); }
       showDone(r);
     } catch (e2) { err(e2.message); }
     finally { S.sending = false; $("submitBtn").disabled = false; }
