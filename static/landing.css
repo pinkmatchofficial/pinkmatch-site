@@ -164,3 +164,8 @@ input:focus,textarea:focus{border-color:var(--accent);outline:none;box-shadow:0 
 .day-hint{display:flex;align-items:center;gap:10px;margin:18px 0 10px;font-size:13.5px;color:var(--muted);text-align:center}
 .day-hint::before,.day-hint::after{content:"";flex:1;height:1px;background:var(--line)}
 .day-hint span{flex:none;white-space:nowrap}
+.day-hint{margin:8px 0 8px}
+#formCard .form-h{margin:0 0 2px;text-align:left}
+#formCard{margin-top:0}
+.day-hint{margin:-2px 0 -6px}
+#formCard{position:relative} #formCard > .anchor{position:absolute;top:-70px}
