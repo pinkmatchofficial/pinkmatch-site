@@ -73,10 +73,12 @@
     if (hasCall) {
       $("callWrap").hidden = !phone;
       if ($("dockCall")) $("dockCall").hidden = !phone;
-      $("formCard").hidden = phone ? true : !$("doneCard").hidden;
-      $("dockForm").hidden = phone;
-      $("dock").querySelector(".in").classList.toggle("one", true);
-      $("dockNote").textContent = phone ? "전화 상담 오전 6시 ~ 새벽 1시" : "지금은 온라인으로 남겨 주세요";
+      // 낮에도 온라인 접수 열어 둠: 전화가 먼저(크게), 통화가 어려우면 아래 접수
+      $("formCard").hidden = !$("doneCard").hidden;
+      if ($("dayFormHint")) $("dayFormHint").hidden = !phone;
+      $("dockForm").hidden = false;
+      $("dock").querySelector(".in").classList.toggle("one", !phone);
+      $("dockNote").textContent = phone ? "전화 상담 오전 6시 ~ 새벽 1시 · 온라인 접수 24시간" : "지금은 온라인으로 남겨 주세요";
     }
   }
   applyHours(); setInterval(applyHours, 60000);

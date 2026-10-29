@@ -154,3 +154,13 @@ input:focus,textarea:focus{border-color:var(--accent);outline:none;box-shadow:0 
 .flow li:last-child{padding-bottom:0}
 .flow b{font-size:15px} .flow span{font-size:13.5px;color:var(--muted)}
 .ptable .pfree{background:var(--accent-softer)} .ptable .pfree b{color:var(--accent)}
+/* 전화 버튼 크게 + 낮에도 온라인 접수 */
+.call{font-size:21px;padding:24px 18px;border-radius:20px;gap:14px}
+.call svg{width:28px;height:28px}
+.call-t b{font-size:21px}
+.call-t small{font-size:14px}
+.dock .in:not(.one){grid-template-columns:minmax(0,1.8fr) minmax(0,1fr)}
+.dock .d-call{font-size:16px}
+.day-hint{display:flex;align-items:center;gap:10px;margin:18px 0 10px;font-size:13.5px;color:var(--muted);text-align:center}
+.day-hint::before,.day-hint::after{content:"";flex:1;height:1px;background:var(--line)}
+.day-hint span{flex:none;white-space:nowrap}
