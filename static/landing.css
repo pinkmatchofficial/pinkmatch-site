@@ -191,3 +191,7 @@ input:focus,textarea:focus{border-color:var(--accent);outline:none;box-shadow:0 
 .foot-areas .rlist{margin-top:6px;padding:8px 10px;background:none;border:1px solid var(--line);border-radius:10px;font-size:12px;line-height:1.8}
 .foot-areas .rlist a{color:var(--muted)}
 .foot-areas .rlist a:not(:last-child)::after{margin:0 5px}
+.call{font-size:20px;padding:20px 18px;border-radius:19px;gap:13px}
+.call svg{width:26px;height:26px}
+.call-t b{font-size:20px}
+.call-t small{font-size:13.5px}
