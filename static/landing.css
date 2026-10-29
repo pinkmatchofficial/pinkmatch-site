@@ -140,3 +140,9 @@ input:focus,textarea:focus{border-color:var(--accent);outline:none;box-shadow:0 
 .work-grid figcaption{position:absolute;left:0;right:0;bottom:0;padding:16px 10px 7px;font-size:12.5px;font-weight:700;color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.6))}
 @media(min-width:640px){.work-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .anchor{display:block;position:relative;top:-70px;visibility:hidden;height:0}
+.promo{display:flex;gap:6px;flex-wrap:wrap;margin:2px 0}
+.promo span{font-size:15px;font-weight:800;border-radius:999px;padding:6px 14px;letter-spacing:-.3px;white-space:nowrap;box-shadow:0 2px 0 rgba(0,0,0,.08)}
+.promo .p1{background:#D6336C;color:#fff}
+.promo .p2{background:#FFE14D;color:#8C1D45}
+.promo .p3{background:#fff;color:#C22660;border:1.5px solid #F3B4C9}
+@media (max-width:360px){.promo span{font-size:13.5px;padding:5px 11px}}
