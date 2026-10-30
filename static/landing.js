@@ -74,13 +74,13 @@
     let left = ((HRS[0] - kstHour() + 24) % 24) * 60 - m;
     if (left <= 0) return "";
     const h = Math.floor(left / 60), mm = left % 60;
-    return `오전 ${HRS[0]}시 연락까지 ${h ? h + "시간 " : ""}${mm}분 남았어요`;
+    return `오전 ${HRS[0]}시 연락 시작까지 ${h ? h + "시간 " : ""}${mm}분 남았어요`;
   }
   function applyHours() {
     const phone = isPhoneTime(), hasCall = !!$("callWrap");
     document.body.classList.toggle("night", !phone);
     NIGHT_EL.forEach(([el, day, night]) => { el.innerHTML = phone ? day : night; });
-    if (!phone && $("nightLeft")) $("nightLeft").textContent = FORCE_NIGHT ? "오전 6시 연락까지 3시간 20분 남았어요" : nightLeft();
+    if (!phone && $("nightLeft")) $("nightLeft").textContent = FORCE_NIGHT ? "오전 6시 연락 시작까지 3시간 20분 남았어요" : nightLeft();
     $("nightNotice").hidden = phone;
     $("lateNotice").hidden = !(phone && isLate());
     if (hasCall) {
@@ -97,6 +97,12 @@
   }
   applyHours(); setInterval(applyHours, 60000);
 
+  // 야간: 연락받을 시간 선택
+  S.want = "";
+  document.querySelectorAll("#wantChips .chip").forEach((b) => (b.onclick = () => {
+    S.want = b.textContent;
+    document.querySelectorAll("#wantChips .chip").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+  }));
   // 문제 선택
   function renderReq() {
     const el = $("reqChips");
@@ -172,6 +178,8 @@
     if (PM.closed) { err(""); toast("온라인 접수는 곧 열려요. 조금만 기다려주세요."); return; }
     if (!/^01[016789]-\d{3,4}-\d{4}$/.test($("fPhone").value)) { err("휴대폰 번호를 다시 확인해주세요."); return; }
     if (PM.verify && !S.token) { err("휴대폰 인증을 먼저 해주세요."); return; }
+    const nightNow = isNight();
+    if (nightNow && !S.want) { err("연락받을 시간을 골라주세요."); $("wantWrap").scrollIntoView({ behavior: "smooth", block: "center" }); return; }
     S.sending = true; $("submitBtn").disabled = true; err("");
     try {
       const r = await api("/api/leads", {
@@ -179,7 +187,7 @@
         sido: S.addr.sido, sigungu: S.addr.sigungu, dong: S.addr.dong, addr: S.addr.addr, addr2: $("fAddr2").value.trim(),
         req: S.req.startsWith("기타") ? "기타" : S.req, note: $("fMemo").value.trim(),
         landing: PM.slug, source: new URLSearchParams(location.search).get("src") || "", src: SRC,
-        website: $("website").value,
+        website: $("website").value, want_time: nightNow ? S.want : "",
       });
       if (!(r.status === "free" && r.reason === "중복 문의")) { gconv("lead"); if (window.pmNaverConv) window.pmNaverConv("lead"); }
       showDone(r);
@@ -193,7 +201,7 @@
     if (r.status === "free" && r.reason === "중복 문의") { title = "이미 접수된 문의가 있어요"; p = "같은 번호로 접수된 문의가 있어 그 문의로 연락드립니다."; }
     else if (r.status === "free" && r.reason === "서비스 지역 아님") { title = "아직 준비 중인 지역이에요"; p = "입력하신 주소는 아직 기사님이 없는 지역이에요. 불편을 드려 죄송합니다."; }
     $("doneT").textContent = title; $("doneP").textContent = p;
-    $("doneWhen").textContent = night ? "오전 6시부터 가장 먼저 연락드립니다" : "곧 연락드립니다";
+    $("doneWhen").textContent = night ? (S.want ? `고르신 시간(${S.want})에 맞춰 연락드립니다` : "오전 6시부터 가장 먼저 연락드립니다") : "곧 연락드립니다";
     $("formCard").hidden = true; $("doneCard").hidden = false;
     $("doneCard").scrollIntoView({ behavior: "smooth", block: "start" });
   }

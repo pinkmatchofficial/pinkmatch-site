@@ -213,3 +213,4 @@ body.night .night-only{display:block}
 .night-card .nc-btn{background:#ff5c93;color:#fff;border:0;text-align:center;font-weight:800;font-size:16px;padding:14px;border-radius:14px;text-decoration:none}
 body.night .dock .d-form{background:#3b2140;color:#fff}
 body.night #formCard{border-color:#e7cfdb}
+#wantWrap{margin-top:2px} #wantWrap .hint{display:block;margin-bottom:6px}

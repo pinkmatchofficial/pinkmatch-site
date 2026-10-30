@@ -22,7 +22,7 @@
 <meta name="theme-color" content="#D6336C">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="/static/landing.css?v=1793340530">
+<link rel="stylesheet" href="/static/landing.css?v=1793341097">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/static/icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
@@ -51,8 +51,8 @@ window.PM_GADS={lead:"AW-18539425069/FHmXCMH8u6wdEK3apIhF",call:"AW-18539425069/
   <div id="lateNotice" class="notice live" hidden><b>🚨 지금도 출동 가능해요!</b> 늦은 시간에도 가까운 기사님이 바로 찾아갑니다. 지금 전화 주세요.</div>
   <section id="nightNotice" class="night-card" hidden aria-label="야간 접수 안내">
     <div class="nc-top"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg><b>지금은 야간 접수 시간이에요</b></div>
-    <p>새벽 1시~오전 6시에는 전화 상담을 쉬어요.<br>지금 남겨 주시면 <em>오전 6시, 가장 먼저</em> 연락드려요.</p>
-    <ol class="nc-steps"><li><b>지금</b><span>1분 접수</span></li><li><b>오전 6시</b><span>첫 순서로 연락</span></li><li><b>바로</b><span>가까운 기사님 출동</span></li></ol>
+    <p>새벽 1시~오전 6시에는 전화 상담을 쉬어요.<br>지금 남겨 주시면 <em>오전 6시부터, 원하시는 시간에</em> 연락드려요.</p>
+    <ol class="nc-steps"><li><b>지금</b><span>1분 접수</span></li><li><b>원하는 시간</b><span>오전 6시부터 연락</span></li><li><b>바로</b><span>가까운 기사님 출동</span></li></ol>
     <p class="nc-left" id="nightLeft"></p>
     <a class="btn nc-btn" href="#form" id="nightGo">야간 접수 남기기</a>
   </section>
@@ -67,7 +67,7 @@ window.PM_GADS={lead:"AW-18539425069/FHmXCMH8u6wdEK3apIhF",call:"AW-18539425069/
   <p class="day-hint" id="dayFormHint" hidden><span>통화가 어려우면 아래에 남겨 주세요</span></p>
 
   <section class="card soft" id="formCard" aria-labelledby="formT">
-    <span id="form" class="anchor"></span><h2 id="formT" class="form-h" data-night="야간 접수">온라인 상담 접수</h2><p class="small muted night-only" style="margin:-6px 0 0">남겨 주시면 오전 6시에 가장 먼저 연락드려요.</p>
+    <span id="form" class="anchor"></span><h2 id="formT" class="form-h" data-night="야간 접수">온라인 상담 접수</h2><p class="small muted night-only" style="margin:-6px 0 0">오전 6시부터, 원하시는 시간에 맞춰 연락드려요.</p>
     
     <div class="safe"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span class="small"><b>번호는 상담 연락에만 쓰여요</b><br><span class="muted">광고 문자나 다른 용도로는 쓰지 않아요. 상담이 끝나면 정해진 기간 뒤 지워집니다.</span></span></div>
     
@@ -83,6 +83,10 @@ window.PM_GADS={lead:"AW-18539425069/FHmXCMH8u6wdEK3apIhF",call:"AW-18539425069/
         <div class="chips" id="reqChips" role="group" aria-labelledby="reqLabel"></div>
       </div>
       <label id="memoWrap" hidden>어떤 문제인지 적어주세요<textarea id="fMemo" rows="3" maxlength="200" placeholder="예: 베란다 배수구에서 물이 역류해요"></textarea></label>
+      <div class="night-only" id="wantWrap">
+        <span class="hint" id="wantLabel">언제 연락드릴까요?<br><span class="muted small">고르신 시간에 맞춰 연락드려요.</span></span>
+        <div class="chips" id="wantChips" role="group" aria-labelledby="wantLabel"><button type="button" class="chip" aria-pressed="false">오전 6시 바로</button><button type="button" class="chip" aria-pressed="false">오전 7~8시</button><button type="button" class="chip" aria-pressed="false">오전 8~9시</button><button type="button" class="chip" aria-pressed="false">오전 9~10시</button><button type="button" class="chip" aria-pressed="false">오전 10시 이후</button></div>
+      </div>
       <label>이름<input id="fName" maxlength="40" autocomplete="name"></label>
       
       <label>휴대폰 번호<input id="fPhone" inputmode="tel" maxlength="13" autocomplete="tel" placeholder="010-0000-0000"></label>
@@ -174,7 +178,7 @@ window.PM_GADS={lead:"AW-18539425069/FHmXCMH8u6wdEK3apIhF",call:"AW-18539425069/
 <div class="toast" id="toast" role="status"></div>
 <script>window.PM={"slug": "gwangju-gwangsan/unnamdong", "label": "운남동", "sido": "광주", "gu": "광산구", "gu_short": "운남동", "category": "배관", "api": "https://app.pinkmatch.kr", "preview": false, "closed": false, "verify": false, "hours": [6, 1], "photos": [{"src": "/static/photos/work01.jpg", "cap": "출동 차량 장비"}, {"src": "/static/photos/work02.jpg", "cap": "변기 막힘 작업"}, {"src": "/static/photos/work03.jpg", "cap": "하수구 배관 작업"}, {"src": "/static/photos/work04.jpg", "cap": "싱크대 배관 작업"}, {"src": "/static/photos/work05.jpg", "cap": "배관 내시경 확인"}, {"src": "/static/photos/work06.jpg", "cap": "전문 관통 장비"}, {"src": "/static/photos/work07.jpg", "cap": "내시경 장비 점검"}, {"src": "/static/photos/work08.jpg", "cap": "배수로 점검"}, {"src": "/static/photos/work09.jpg", "cap": "플렉스샤프트 장비"}, {"src": "/static/photos/work10.jpg", "cap": "현장 장비 세팅"}]};</script>
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js" defer></script>
-<script src="/static/landing.js?v=1793340530" defer></script>
+<script src="/static/landing.js?v=1793341097" defer></script>
 <!-- 네이버 광고 전환추적 (wcs.trans) -->
 <script src="https://wcs.naver.net/wcslog.js"></script>
 <script>window.PM_NWA=["s_55a7d498e1cb"];
