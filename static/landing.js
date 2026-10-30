@@ -11,7 +11,8 @@
   // 전화 받는 시간 [시작, 끝] (예: 6시~새벽 1시). 그 밖(새벽)은 온라인 접수만
   const HRS = (PM.hours && PM.hours.length === 2) ? PM.hours : [0, 0];
   const inRange = (h, a, b) => a === b ? true : (a < b ? h >= a && h < b : h >= a || h < b);
-  const isPhoneTime = () => inRange(kstHour(), HRS[0], HRS[1]);
+  const FORCE_NIGHT = new URLSearchParams(location.search).get("pm_night") === "1";  // 미리보기용
+  const isPhoneTime = () => !FORCE_NIGHT && inRange(kstHour(), HRS[0], HRS[1]);
   const isLate = () => isPhoneTime() && inRange(kstHour(), 22, HRS[1] || 24);
   const isNight = () => !isPhoneTime();
   async function api(path, body) {
@@ -66,8 +67,20 @@
   }));
 
   // 시간대별 화면: 전화 시간엔 전화만(22시~끝시엔 '지금도 출동 가능' 띠), 새벽엔 전화 숨기고 온라인 접수만
+  // 야간(전화 쉬는 시간) 문구 바꾸기: data-night 가 있는 곳은 밤에 그 글로, 낮엔 원래 글로
+  const NIGHT_EL = [...document.querySelectorAll("[data-night]")].map((el) => [el, el.innerHTML, el.dataset.night]);
+  function nightLeft() {
+    const m = Number(new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Seoul", minute: "numeric" }).format(new Date()));
+    let left = ((HRS[0] - kstHour() + 24) % 24) * 60 - m;
+    if (left <= 0) return "";
+    const h = Math.floor(left / 60), mm = left % 60;
+    return `오전 ${HRS[0]}시 연락까지 ${h ? h + "시간 " : ""}${mm}분 남았어요`;
+  }
   function applyHours() {
     const phone = isPhoneTime(), hasCall = !!$("callWrap");
+    document.body.classList.toggle("night", !phone);
+    NIGHT_EL.forEach(([el, day, night]) => { el.innerHTML = phone ? day : night; });
+    if (!phone && $("nightLeft")) $("nightLeft").textContent = FORCE_NIGHT ? "오전 6시 연락까지 3시간 20분 남았어요" : nightLeft();
     $("nightNotice").hidden = phone;
     $("lateNotice").hidden = !(phone && isLate());
     if (hasCall) {
@@ -78,7 +91,8 @@
       if ($("dayFormHint")) $("dayFormHint").hidden = !phone;
       $("dockForm").hidden = false;
       $("dock").querySelector(".in").classList.toggle("one", !phone);
-      $("dockNote").textContent = phone ? "전화 상담 오전 6시 ~ 새벽 1시 · 온라인 접수 24시간" : "지금은 온라인으로 남겨 주세요";
+      $("dockNote").textContent = phone ? "전화 상담 오전 6시 ~ 새벽 1시 · 온라인 접수 24시간" : "오전 6시, 가장 먼저 연락드려요";
+      $("dockForm").textContent = phone ? "온라인 접수" : "야간 접수 남기기";
     }
   }
   applyHours(); setInterval(applyHours, 60000);
@@ -185,6 +199,7 @@
   }
   $("again").onclick = () => { $("doneCard").hidden = true; $("formCard").hidden = false; S.token = ""; $("verified").hidden = true; $("fCode").value = ""; };
 
+  if ($("nightGo")) $("nightGo").onclick = (e) => { e.preventDefault(); $("dockForm").click(); };
   $("dockForm").onclick = () => {
     $("formCard").hidden = false; $("doneCard").hidden = true;
     $("formCard").scrollIntoView({ behavior: "smooth", block: "start" });
