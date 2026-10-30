@@ -195,3 +195,4 @@ input:focus,textarea:focus{border-color:var(--accent);outline:none;box-shadow:0 
 .call svg{width:26px;height:26px}
 .call-t b{font-size:20px}
 .call-t small{font-size:13.5px}
+.hero h1 .nw{white-space:nowrap}
