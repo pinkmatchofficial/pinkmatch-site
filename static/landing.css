@@ -227,7 +227,7 @@ body.night #formCard{border-color:#e7cfdb}
 @media (min-width:481px){.mcard{border-radius:0 0 18px 18px}}
 .call.withav{padding-left:86px;justify-content:flex-start}
 .call.withav svg{display:none}
-.call .av{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:58px;height:58px;border-radius:50%;background:#fff center/cover no-repeat url(/static/model_face.jpg);border:2px solid rgba(255,255,255,.9)}
+.call .av{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:58px;height:58px;border-radius:50%;background:#fff center/cover no-repeat url(/static/model_face.jpg?v=2);border:2px solid rgba(255,255,255,.9)}
 body.night .mcard .mt b{font-size:24px}
 .call.withav{justify-content:center;padding-left:78px;padding-right:78px;text-align:center}
 .call.withav .call-t{align-items:center}
@@ -238,7 +238,7 @@ body.night .mcard .mt b{font-size:24px}
 .after-call.show{background:rgba(20,10,15,.35)}
 .ac-in{position:relative;width:min(100%,480px);background:#fff;border-radius:22px 22px 0 0;padding:26px 22px calc(22px + env(safe-area-inset-bottom,0px));text-align:center;transform:translateY(100%);transition:transform .28s ease-out}
 .after-call.show .ac-in{transform:none}
-.ac-face{width:76px;height:76px;border-radius:50%;margin:-64px auto 10px;border:4px solid #fff;background:#fde6ee center/cover no-repeat url(/static/model_face.jpg);box-shadow:0 6px 18px rgba(140,29,69,.2)}
+.ac-face{width:76px;height:76px;border-radius:50%;margin:-64px auto 10px;border:4px solid #fff;background:#fde6ee center/cover no-repeat url(/static/model_face.jpg?v=2);box-shadow:0 6px 18px rgba(140,29,69,.2)}
 .ac-in b{display:block;font-size:22px;font-weight:900;letter-spacing:-.5px}
 .ac-in p{margin:6px 0 16px;font-size:16px;color:var(--accent-deep,#8c1d45);font-weight:700}
 .ac-call{display:block;background:var(--accent);color:#fff;text-decoration:none;font-weight:800;font-size:17px;border-radius:14px;padding:15px}
