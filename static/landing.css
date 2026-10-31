@@ -229,3 +229,6 @@ body.night #formCard{border-color:#e7cfdb}
 .call.withav svg{display:none}
 .call .av{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:58px;height:58px;border-radius:50%;background:#fff center/cover no-repeat url(/static/model_face.jpg);border:2px solid rgba(255,255,255,.9)}
 body.night .mcard .mt b{font-size:24px}
+.call.withav{justify-content:center;padding-left:78px;padding-right:78px;text-align:center}
+.call.withav .call-t{align-items:center}
+.call.withav{padding-left:74px;padding-right:62px}.call.withav .call-t small{white-space:nowrap;font-size:15px}
