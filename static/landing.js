@@ -118,7 +118,7 @@
       $("dockForm").hidden = false;
       $("dock").querySelector(".in").classList.toggle("one", !phone);
       $("dockNote").textContent = phone ? "전화 상담 오전 6시 ~ 새벽 1시 · 온라인 접수 24시간" : "오전 6시, 가장 먼저 연락드려요";
-      $("dockForm").textContent = phone ? "온라인 접수" : "야간 접수 남기기";
+      $("dockForm").textContent = phone ? "상담 접수" : "야간 접수 남기기";
     }
   }
   if (!$("callWrap")) placeForm(true);

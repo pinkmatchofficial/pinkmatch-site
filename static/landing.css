@@ -280,3 +280,4 @@ body.night .mcard .mt b{font-size:24px}
 .mid-call{margin-top:18px}
 .call2{text-align:left}
 #callWrap .call2+.hint{margin-top:10px}
+.mcard{margin-bottom:-6px}
