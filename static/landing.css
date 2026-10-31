@@ -244,3 +244,15 @@ body.night .mcard .mt b{font-size:24px}
 .ac-call{display:block;background:var(--accent);color:#fff;text-decoration:none;font-weight:800;font-size:17px;border-radius:14px;padding:15px}
 .ac-x{position:absolute;right:12px;top:10px;width:36px;height:36px;border:0;background:none;font-size:26px;color:#9a8f95;cursor:pointer}
 @media (prefers-reduced-motion:reduce){.ac-in,.after-call{transition:none}}
+
+/* 온라인 접수 펼침 버튼 · 중간 전화 버튼 */
+.form-open{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;margin:14px 0 4px;padding:15px 18px;background:#fff;border:1.5px solid var(--accent);border-radius:16px;color:var(--accent-deep,#8c1d45);font:inherit;text-align:left;cursor:pointer}
+.form-open[hidden]{display:none}
+.form-open b{display:block;font-size:17px;font-weight:800}
+.form-open small{display:block;margin-top:2px;font-size:13px;color:var(--muted)}
+.form-open svg{flex:none;color:var(--accent)}
+.form-open:focus-visible{outline:3px solid rgba(214,51,108,.35);outline-offset:2px}
+#formBottom{margin-top:8px}
+.mid-call{margin:6px 0 30px;text-align:center}
+.mid-call[hidden]{display:none}
+.mid-call p{margin:0 0 10px;font-size:15px;font-weight:700;color:var(--muted)}

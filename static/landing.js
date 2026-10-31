@@ -95,6 +95,12 @@
     const h = Math.floor(left / 60), mm = left % 60;
     return `오전 ${HRS[0]}시 연락 시작까지 ${h ? h + "시간 " : ""}${mm}분 남았어요`;
   }
+  // 온라인 접수: 낮에는 위쪽은 버튼(누르면 펼침), 맨 아래는 폼. 밤에는 위쪽에 폼을 바로 펼침
+  function placeForm(top) {
+    const box = $("formBox"), slot = $(top ? "formTop" : "formBottom");
+    if (box && slot && box.parentNode !== slot) slot.appendChild(box);
+    if ($("formOpen")) { $("formOpen").hidden = top; $("formOpen").setAttribute("aria-expanded", top ? "true" : "false"); }
+  }
   function applyHours() {
     const phone = isPhoneTime(), hasCall = !!$("callWrap");
     document.body.classList.toggle("night", !phone);
@@ -107,13 +113,15 @@
       if ($("dockCall")) $("dockCall").hidden = !phone;
       // 낮에도 온라인 접수 열어 둠: 전화가 먼저(크게), 통화가 어려우면 아래 접수
       $("formCard").hidden = !$("doneCard").hidden;
-      if ($("dayFormHint")) $("dayFormHint").hidden = !phone;
+      placeForm(!phone || S.formOpened);
+      if ($("midCall")) $("midCall").hidden = !phone;
       $("dockForm").hidden = false;
       $("dock").querySelector(".in").classList.toggle("one", !phone);
       $("dockNote").textContent = phone ? "전화 상담 오전 6시 ~ 새벽 1시 · 온라인 접수 24시간" : "오전 6시, 가장 먼저 연락드려요";
       $("dockForm").textContent = phone ? "온라인 접수" : "야간 접수 남기기";
     }
   }
+  if (!$("callWrap")) placeForm(true);
   applyHours(); setInterval(applyHours, 60000);
 
   // 야간: 연락받을 시간 선택
@@ -227,6 +235,11 @@
   $("again").onclick = () => { $("doneCard").hidden = true; $("formCard").hidden = false; S.token = ""; $("verified").hidden = true; $("fCode").value = ""; };
 
   if ($("nightGo")) $("nightGo").onclick = (e) => { e.preventDefault(); $("dockForm").click(); };
+  if ($("formOpen")) $("formOpen").onclick = () => {
+    S.formOpened = true; placeForm(true);
+    $("formCard").hidden = false; $("doneCard").hidden = true;
+    $("formCard").scrollIntoView({ behavior: "smooth", block: "start" });
+  };
   $("dockForm").onclick = () => {
     $("formCard").hidden = false; $("doneCard").hidden = true;
     $("formCard").scrollIntoView({ behavior: "smooth", block: "start" });
