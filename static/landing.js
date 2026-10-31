@@ -59,12 +59,31 @@
   // 전화 버튼 클릭 기록 (통화 기록과 시간으로 맞춰 키워드 추정)
   document.querySelectorAll('a[href^="tel:"]').forEach((a) => a.addEventListener("click", () => {
     if (PM.preview) return;
-    gconv("call");
-    if (window.pmNaverConv) window.pmNaverConv("custom001");  // 네이버: 전화 버튼 클릭
+    if (!a.classList.contains("ac-call")) {  // 통화 후 '다시 전화'는 전환으로 두 번 세지 않음
+      gconv("call");
+      if (window.pmNaverConv) window.pmNaverConv("custom001");  // 네이버: 전화 버튼 클릭
+    }
     const body = JSON.stringify({ landing: PM.slug, src: SRC });
     try { if (!navigator.sendBeacon(PM.api + "/api/click", new Blob([body], { type: "text/plain" }))) throw 0; }
     catch (e) { fetch(PM.api + "/api/click", { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" }, body, keepalive: true }).catch(() => {}); }
   }));
+
+  // 통화 마치고 페이지로 돌아온 사람에게 한 번만 안내 (전화 버튼 누른 뒤 8초~30분 안에 돌아왔을 때)
+  let telAt = 0;
+  document.querySelectorAll('a[href^="tel:"]').forEach((a) => a.addEventListener("click", () => { telAt = Date.now(); }));
+  function showAfterCall() {
+    if (!telAt || !$("afterCall")) return;
+    const gap = Date.now() - telAt; telAt = 0;
+    if (gap < 8000 || gap > 30 * 60 * 1000) return;
+    try { if (sessionStorage.getItem("pm_after")) return; sessionStorage.setItem("pm_after", "1"); } catch (e) {}
+    $("afterCall").hidden = false; requestAnimationFrame(() => $("afterCall").classList.add("show"));
+  }
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) showAfterCall(); });
+  window.addEventListener("focus", showAfterCall);
+  function closeAfter() { $("afterCall").classList.remove("show"); setTimeout(() => ($("afterCall").hidden = true), 250); }
+  if ($("afterClose")) $("afterClose").onclick = closeAfter;
+  if ($("afterCall")) $("afterCall").addEventListener("click", (e) => { if (e.target === $("afterCall")) closeAfter(); });
+  if (new URLSearchParams(location.search).get("pm_after") === "1" && $("afterCall")) { $("afterCall").hidden = false; $("afterCall").classList.add("show"); }  // 미리보기용
 
   // 시간대별 화면: 전화 시간엔 전화만(22시~끝시엔 '지금도 출동 가능' 띠), 새벽엔 전화 숨기고 온라인 접수만
   // 야간(전화 쉬는 시간) 문구 바꾸기: data-night 가 있는 곳은 밤에 그 글로, 낮엔 원래 글로
