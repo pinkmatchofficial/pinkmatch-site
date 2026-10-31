@@ -197,9 +197,10 @@
   $("leadForm").addEventListener("submit", async (e) => {
     e.preventDefault();
     if (S.sending) return;
-    if (!S.addr) { err("주소를 검색해서 선택해주세요."); return; }
+    // 지역 페이지는 주소 없이도 접수 (그 페이지 지역으로 배정, 상세 주소는 통화로)
+    const addr = S.addr || (PM.sido && PM.gu ? { sido: PM.sido, sigungu: PM.gu, dong: "", addr: "" } : null);
+    if (!addr) { err("주소를 검색해서 선택해주세요."); return; }
     if (S.req.startsWith("기타") && !$("fMemo").value.trim()) { err("어떤 문제인지 적어주세요."); return; }
-    if (!$("fName").value.trim()) { err("이름을 입력해주세요."); return; }
     if (!$("fAgree").checked) { err("개인정보 수집·이용 및 제공에 동의해주세요."); return; }
     if (PM.preview) { err(""); toast("오픈 준비 중인 미리보기 화면이에요. 아직 실제 접수는 되지 않아요."); return; }
     if (PM.closed) { err(""); toast("온라인 접수는 곧 열려요. 조금만 기다려주세요."); return; }
@@ -211,7 +212,7 @@
     try {
       const r = await api("/api/leads", {
         verify_token: S.token || "", category: PM.category, name: $("fName").value.trim(), phone: $("fPhone").value,
-        sido: S.addr.sido, sigungu: S.addr.sigungu, dong: S.addr.dong, addr: S.addr.addr, addr2: $("fAddr2").value.trim(),
+        sido: addr.sido, sigungu: addr.sigungu, dong: addr.dong, addr: addr.addr, addr2: $("fAddr2").value.trim(),
         req: S.req.startsWith("기타") ? "기타" : S.req, note: $("fMemo").value.trim(),
         landing: PM.slug, source: new URLSearchParams(location.search).get("src") || "", src: SRC,
         website: $("website").value, want_time: nightNow ? S.want : "",
@@ -274,4 +275,5 @@
     const img = g.getImageData(0, 0, W, H), d = img.data; for (let i = 0; i < d.length; i += 4) { const n = (rnd() - 0.5) * 22; d[i] += n; d[i + 1] += n; d[i + 2] += n; } g.putImageData(img, 0, 0);
     const v = g.createRadialGradient(W / 2, H / 2, H * 0.3, W / 2, H / 2, W * 0.7); v.addColorStop(0, "rgba(0,0,0,0)"); v.addColorStop(1, "rgba(0,0,0,.45)"); g.fillStyle = v; g.fillRect(0, 0, W, H);
   }
+
 })();

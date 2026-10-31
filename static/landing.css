@@ -288,3 +288,5 @@ body.night .mcard .mt b{font-size:24px}
 .mcard{margin-bottom:-8px}
 .call2{text-align:center}
 .call2 .c2-t{align-items:center}
+.opt{font-weight:400;font-size:12.5px;color:var(--muted)}
+
