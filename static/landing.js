@@ -216,7 +216,7 @@
   // 사진 띠: 실제 사진이 있으면 사진, 없으면 임시 그림
   const SHOTS = [["출동 차량", "van"], ["고압 세척", "jet"], ["변기 작업", "toilet"], ["배관 내시경", "scope"], ["싱크대 배관", "sink"], ["현장 기사", "tech"], ["장비 준비", "tools"], ["작업 완료", "done"]];
   const track = $("reelTrack");
-  if (PM.photos && PM.photos.length) {
+  if (!track) { /* 첫 화면 사진 띠 없음 (모델 배너) */ } else if (PM.photos && PM.photos.length) {
     const list = [...PM.photos, ...PM.photos];
     track.innerHTML = list.map((x, i) => `<figure${i >= PM.photos.length ? ' aria-hidden="true"' : ""}><img src="${x.src}" alt="${x.cap}" loading="lazy"><figcaption>${x.cap}</figcaption></figure>`).join("");
   } else {

@@ -214,3 +214,18 @@ body.night .night-only{display:block}
 body.night .dock .d-form{background:#3b2140;color:#fff}
 body.night #formCard{border-color:#e7cfdb}
 #wantWrap{margin-top:2px} #wantWrap .hint{display:block;margin-bottom:6px}
+/* 첫 화면 모델 배너 */
+.mcard{position:relative;margin:-14px -18px 6px;height:300px;overflow:hidden;background:linear-gradient(170deg,#e24880,#c42460)}
+.mcard::before{content:"";position:absolute;right:-90px;top:-110px;width:320px;height:320px;border-radius:50%;background:rgba(255,255,255,.12)}
+.mcard img{position:absolute;right:-6px;bottom:-60px;height:340px;width:auto}
+.mcard .mt{position:absolute;left:20px;top:34px;color:#fff;z-index:1}
+.mcard .mt b{display:block;font-size:27px;line-height:1.2;font-weight:900;letter-spacing:-1px}
+.mcard .bd{display:flex;flex-direction:column;gap:7px;margin-top:16px;align-items:flex-start}
+.mcard .bd span{font-size:14px;font-weight:800;border-radius:999px;padding:6px 12px;letter-spacing:-.3px}
+.mcard .y{background:#FFE14D;color:#8C1D45}.mcard .w{background:#fff;color:#C22660}.mcard .k{background:#221d20;color:#fff}
+@media (max-width:350px){.mcard .mt b{font-size:23px}.mcard img{right:-30px}}
+@media (min-width:481px){.mcard{border-radius:0 0 18px 18px}}
+.call.withav{padding-left:86px;justify-content:flex-start}
+.call.withav svg{display:none}
+.call .av{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:58px;height:58px;border-radius:50%;background:#fff center/cover no-repeat url(/static/model_face.jpg);border:2px solid rgba(255,255,255,.9)}
+body.night .mcard .mt b{font-size:24px}
