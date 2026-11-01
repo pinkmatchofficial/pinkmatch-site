@@ -33,6 +33,7 @@
     const now = { kw: g("n_keyword") || g("utm_term") || g("keyword"), query: g("n_query"),
       campaign: [g("n_campaign") || g("utm_campaign"), g("n_ad_group")].filter(Boolean).join(" / "),
       cid: g("pm_cid") || g("utm_id"), gid: g("n_ad_group") || g("pm_gid"),
+      gclid: g("gclid") || (g("gbraid") ? "gbraid:" + g("gbraid") : "") || (g("wbraid") ? "wbraid:" + g("wbraid") : ""),
       media: "", ref: ref.slice(0, 200), device: /Mobi|Android|iPhone/i.test(navigator.userAgent) ? "모바일" : "PC" };
     if (g("n_media") || g("n_keyword") || g("n_query")) now.media = g("n_campaign_type") === "2" ? "네이버 쇼핑검색" : "네이버 파워링크";
     else if (g("gclid") || g("gad_source")) now.media = "구글 광고";
