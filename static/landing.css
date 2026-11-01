@@ -296,3 +296,24 @@ body.night .mcard .mt b{font-size:24px}
 .ptable .pask b{font-size:14px;color:var(--accent-deep,#8c1d45)}
 .kicker-under{display:block;margin:-6px 0 12px}
 .reel.mid{margin-bottom:-18px}
+
+/* 진행 단계 v3: 가로 스텝 */
+.fb{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:16px 8px 14px;box-shadow:0 10px 26px rgba(140,29,69,.08)}
+.fb-row{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);position:relative}
+.fb-row::before{content:"";position:absolute;left:12.5%;right:12.5%;top:47px;height:4px;border-radius:4px;background:linear-gradient(90deg,var(--accent),#f3a3bf)}
+.fb-step{display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;padding:0 2px}
+.fb-when{font-size:11.5px;font-weight:800;color:var(--accent-deep);background:var(--accent-soft);border-radius:999px;padding:2px 9px;margin-bottom:8px;white-space:nowrap}
+.fb-step:first-child .fb-when{background:var(--accent);color:#fff}
+.fb-ic{width:50px;height:50px;border-radius:50%;background:var(--surface);border:3px solid var(--accent);color:var(--accent);display:grid;place-items:center;position:relative;z-index:1}
+.fb-step:first-child .fb-ic{background:var(--accent);color:#fff;box-shadow:0 0 0 6px rgba(214,51,108,.15)}
+.fb-ic svg{width:22px;height:22px}
+.fb-step:not(:last-child)::after{content:"";position:absolute;right:-5px;top:41px;width:9px;height:9px;border-top:3px solid #f3a3bf;border-right:3px solid #f3a3bf;transform:rotate(45deg);z-index:2}
+.fb-step b{display:block;margin-top:9px;font-size:13.5px;font-weight:800;letter-spacing:-.45px;line-height:1.25;color:var(--fg);white-space:nowrap}
+.fb-step .tag{display:block;margin-top:4px;font-size:11.5px;font-weight:700;color:var(--muted)}
+.fb-step .tag strong{color:var(--accent);font-weight:800}
+.fb-sum{display:flex;align-items:center;gap:10px;margin:14px 6px 0;padding:11px 12px;border-radius:14px;background:var(--accent-softer)}
+.fb-sum i{flex:none;width:30px;height:30px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center}
+.fb-sum i svg{width:16px;height:16px}
+.fb-sum p{margin:0;font-size:13px;line-height:1.45;color:var(--muted)}
+.fb-sum p b{color:var(--fg)}
+@media (max-width:350px){.fb-step b{font-size:12px}.fb-when{font-size:10.5px;padding:2px 6px}.fb-ic{width:44px;height:44px}.fb-row::before{top:44px}.fb-step:not(:last-child)::after{top:38px}}
