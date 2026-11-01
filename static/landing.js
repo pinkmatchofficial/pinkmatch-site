@@ -50,6 +50,26 @@
     try { localStorage.setItem("pm_src", JSON.stringify(src)); } catch (e) {}
     const { t, ...out } = src; return out;
   })();
+
+  // 검색어 업종 맞춤: 광고 키워드 · 실제 검색어에 업종 단어가 있으면 첫 제목 · 문제 위치 · 사진 순서를 그 업종으로.
+  // 고객이 친 글자는 화면에 그대로 쓰지 않고, 미리 정한 문구만 보여줌
+  const CAT = (() => {
+    const text = `${SRC.query || ""} ${SRC.kw || ""}`.replace(/\s+/g, "");
+    if (!text) return null;
+    const RULES = [
+      ["세면대", /세면대|세면기|세숫대/], ["싱크대", /싱크|씽크|주방|부엌|개수대|설거지/],
+      ["변기", /변기|양변기|좌변기|화장실/], ["하수구", /하수구|배수구|하수관|욕실|욕조|세탁실|베란다|배수관/],
+    ];
+    for (const [name, re] of RULES) if (re.test(text)) return name;
+    return null;
+  })();
+  if (CAT) {
+    const h1 = document.querySelector(".hero h1"), first = h1 && h1.querySelector("span[data-night]:not(#heroSub)");
+    const area = PM.gu ? (PM.gu_short || "") : "";
+    if (first) first.textContent = `${area ? area + " " : ""}${CAT}막힘,`;
+    if ($("heroSub")) $("heroSub").textContent = "30분 내 바로 출동해요";
+    S.req = CAT;
+  }
   // 구글 광고 전환 (라벨이 설정된 것만)
   function gconv(kind) {
     const to = (window.PM_GADS || {})[kind];
@@ -250,7 +270,8 @@
   const SHOTS = [["출동 차량", "van"], ["고압 세척", "jet"], ["변기 작업", "toilet"], ["배관 내시경", "scope"], ["싱크대 배관", "sink"], ["현장 기사", "tech"], ["장비 준비", "tools"], ["작업 완료", "done"]];
   const track = $("reelTrack");
   if (!track) { /* 첫 화면 사진 띠 없음 (모델 배너) */ } else if (PM.photos && PM.photos.length) {
-    const shots = PM.photos.slice(0, 6);  // 작업 장면 6장 (장비 사진은 아래 '실제 작업 현장'에)
+    let shots = PM.photos.slice(0, 6);
+    if (CAT) { const hit = shots.filter((x) => x.cap.includes(CAT === "세면대" ? "싱크대" : CAT)); shots = [...hit, ...shots.filter((x) => !hit.includes(x))]; }  // 작업 장면 6장 (장비 사진은 아래 '실제 작업 현장'에)
     const list = [...shots, ...shots];
     track.innerHTML = list.map((x, i) => `<figure${i >= shots.length ? ' aria-hidden="true"' : ""}><img src="${x.src}" alt="${x.cap}" loading="lazy"><figcaption>${x.cap}</figcaption></figure>`).join("");
   } else {
