@@ -317,3 +317,12 @@ body.night .mcard .mt b{font-size:24px}
 .fb-sum p{margin:0;font-size:13px;line-height:1.45;color:var(--muted)}
 .fb-sum p b{color:var(--fg)}
 @media (max-width:350px){.fb-step b{font-size:12px}.fb-when{font-size:10.5px;padding:2px 6px}.fb-ic{width:44px;height:44px}.fb-row::before{top:44px}.fb-step:not(:last-child)::after{top:38px}}
+/* 전화 버튼 움직임: 빛 지나가기 + 수화기 흔들림 + 링 퍼짐 (계속, 3.6초 주기) */
+.call2{position:relative;overflow:hidden;isolation:isolate}
+.call2::before{content:"";position:absolute;top:0;bottom:0;left:-60%;width:45%;background:linear-gradient(105deg,transparent,rgba(255,255,255,.38),transparent);transform:skewX(-18deg);animation:c2shine 3.6s ease-in-out infinite;pointer-events:none;z-index:0}
+.call2>*{position:relative;z-index:1}
+@keyframes c2shine{0%,55%{left:-60%}85%,100%{left:130%}}
+.c2-ic svg{animation:c2wiggle 3.6s ease-in-out infinite;transform-origin:50% 50%}
+@keyframes c2wiggle{0%,62%,100%{transform:rotate(0)}66%{transform:rotate(-16deg)}70%{transform:rotate(14deg)}74%{transform:rotate(-12deg)}78%{transform:rotate(8deg)}82%{transform:rotate(0)}}
+.c2-ic::after{animation:c2ring 1.8s ease-out infinite}
+@media (prefers-reduced-motion:reduce){.call2::before,.c2-ic svg,.c2-ic::after{animation:none}.c2-ic::after{opacity:0}}
