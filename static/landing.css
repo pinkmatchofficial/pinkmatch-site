@@ -295,3 +295,4 @@ body.night .mcard .mt b{font-size:24px}
 .reel.mid{margin:2px -18px 0;border-top:1px solid var(--line)}
 .ptable .pask b{font-size:14px;color:var(--accent-deep,#8c1d45)}
 .kicker-under{display:block;margin:-6px 0 12px}
+.reel.mid{margin-bottom:-18px}

@@ -250,8 +250,9 @@
   const SHOTS = [["출동 차량", "van"], ["고압 세척", "jet"], ["변기 작업", "toilet"], ["배관 내시경", "scope"], ["싱크대 배관", "sink"], ["현장 기사", "tech"], ["장비 준비", "tools"], ["작업 완료", "done"]];
   const track = $("reelTrack");
   if (!track) { /* 첫 화면 사진 띠 없음 (모델 배너) */ } else if (PM.photos && PM.photos.length) {
-    const list = [...PM.photos, ...PM.photos];
-    track.innerHTML = list.map((x, i) => `<figure${i >= PM.photos.length ? ' aria-hidden="true"' : ""}><img src="${x.src}" alt="${x.cap}" loading="lazy"><figcaption>${x.cap}</figcaption></figure>`).join("");
+    const shots = PM.photos.slice(0, 6);  // 작업 장면 6장 (장비 사진은 아래 '실제 작업 현장'에)
+    const list = [...shots, ...shots];
+    track.innerHTML = list.map((x, i) => `<figure${i >= shots.length ? ' aria-hidden="true"' : ""}><img src="${x.src}" alt="${x.cap}" loading="lazy"><figcaption>${x.cap}</figcaption></figure>`).join("");
   } else {
     const list = [...SHOTS, ...SHOTS];
     track.innerHTML = list.map((x, i) => `<figure${i >= SHOTS.length ? ' aria-hidden="true"' : ""}><canvas data-k="${x[1]}" data-i="${i % SHOTS.length}" role="img" aria-label="${x[0]} 예시 이미지"></canvas><figcaption>${x[0]}</figcaption></figure>`).join("");
