@@ -35,7 +35,9 @@
     const show = () => { de.style.visibility = ""; };
     const t = setTimeout(show, 900);
     fetch("/static/rg.json").then((r) => r.json()).then((RG) => {
-      const hit = (m) => Object.keys(m).filter((k) => q.includes(k)).sort((a, b) => b.length - a.length);
+      // 업종·작업 단어는 지우고 남은 글자에서만 지역 이름을 찾음 (예: "하수구"의 "하"를 지역으로 착각하지 않게)
+      const qr = q.replace(/양변기|좌변기|변기|하수구|하수관|오수관|싱크대|씽크대|세면대|배수구|배관|화장실|욕실|욕조|주방|부엌|베란다|세탁실|막혔을때|막힘|뚫는곳|뚫는업체|뚫어주는곳|뚫음|업체|비용|역류|청소|고압세척|출장|근처|전문|24시/g, "|");
+      const hit = (m) => Object.keys(m).filter((k) => k.length >= 2 && qr.includes(k)).sort((a, b) => b.length - a.length);
       const gk = hit(RG.g); let gs = gk.length ? RG.g[gk[0]] : [];
       if (gs.length > 1) { const narrowed = gk.flatMap((k) => RG.g[k]).filter((v, i, a) => a.indexOf(v) !== i); if (narrowed.length) gs = [narrowed[0]]; }
       let target = "";
@@ -95,9 +97,21 @@
     for (const [name, re] of RULES) if (re.test(text)) return name;
     return null;
   })();
+  // 광역시 구·동 페이지인데 검색어에 이 지역 이름이 없으면(지역 없는 검색 · 도시 전체 노출) 제목 지역을 도시 이름으로
+  const METRO = ["서울", "부산", "대구", "인천", "광주", "대전", "울산"];
+  const AREA = (() => {
+    const q = (SRC.query || "").replace(/\s+/g, "");
+    if (!q || !PM.gu || !METRO.includes(PM.sido)) return null;
+    const mine = [PM.label, PM.gu, PM.gu.replace(/(시|군|구)$/, ""), PM.gu_short].filter((x) => x && x.length >= 2);
+    return mine.some((x) => q.includes(x)) ? null : PM.sido;
+  })();
+  if (AREA && !CAT) {
+    const first = document.querySelector(".hero h1 span[data-night]:not(#heroSub)");
+    if (first) { first.textContent = `${AREA}, 30분 내 출동 가능`; first.dataset.night = `${AREA}, 문의 남겨주시면`; }
+  }
   if (CAT) {
     const h1 = document.querySelector(".hero h1"), first = h1 && h1.querySelector("span[data-night]:not(#heroSub)");
-    const area = (PM.gu || PM.slug.startsWith("st/")) ? (PM.gu_short || "") : "";
+    const area = AREA || ((PM.gu || PM.slug.startsWith("st/")) ? (PM.gu_short || "") : "");
     if (first) first.textContent = `${area ? area + " " : ""}${CAT}막힘,`;
     if ($("heroSub")) $("heroSub").textContent = "30분 내 바로 출동해요";
     S.req = CAT;
