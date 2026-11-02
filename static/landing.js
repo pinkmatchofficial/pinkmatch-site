@@ -97,7 +97,7 @@
   })();
   if (CAT) {
     const h1 = document.querySelector(".hero h1"), first = h1 && h1.querySelector("span[data-night]:not(#heroSub)");
-    const area = PM.gu ? (PM.gu_short || "") : "";
+    const area = (PM.gu || PM.slug.startsWith("st/")) ? (PM.gu_short || "") : "";
     if (first) first.textContent = `${area ? area + " " : ""}${CAT}막힘,`;
     if ($("heroSub")) $("heroSub").textContent = "30분 내 바로 출동해요";
     S.req = CAT;
