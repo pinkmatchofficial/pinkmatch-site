@@ -23,6 +23,37 @@
   }
   const fmtPhone = (v) => { const d = v.replace(/\D/g, "").slice(0, 11); return d.length < 4 ? d : d.length < 8 ? d.slice(0, 3) + "-" + d.slice(3) : d.slice(0, 3) + "-" + d.slice(3, 7) + "-" + d.slice(7); };
 
+  // 검색어 지역과 페이지 지역이 다르면(확장검색으로 다른 지역 키워드에 걸린 경우) 검색어 지역 페이지로 옮김
+  (function fixRegion() {
+    const q0 = new URLSearchParams(location.search);
+    if (q0.get("pm_rd")) return;
+    const q = (q0.get("n_query") || q0.get("utm_term") || "").replace(/\s+/g, "");
+    if (!q || q.length < 3) return;
+    const mine = [PM.label, PM.gu, (PM.gu || "").replace(/(시|군|구)$/, ""), PM.gu_short].filter((x) => x && x.length >= 2 && x !== "전국");
+    if (mine.some((x) => q.includes(x))) return;  // 검색어에 이 페이지 지역이 있으면 그대로
+    const de = document.documentElement; de.style.visibility = "hidden";
+    const show = () => { de.style.visibility = ""; };
+    const t = setTimeout(show, 900);
+    fetch("/static/rg.json").then((r) => r.json()).then((RG) => {
+      const hit = (m) => Object.keys(m).filter((k) => q.includes(k)).sort((a, b) => b.length - a.length);
+      const gk = hit(RG.g); let gs = gk.length ? RG.g[gk[0]] : [];
+      if (gs.length > 1) { const narrowed = gk.flatMap((k) => RG.g[k]).filter((v, i, a) => a.indexOf(v) !== i); if (narrowed.length) gs = [narrowed[0]]; }
+      let target = "";
+      for (const k of hit(RG.d)) {
+        let c = RG.d[k];
+        if (gs.length) c = c.filter(([p, par]) => gs.includes(par) || gs.includes(p));
+        if (c.length === 1) { target = c[0][0]; break; }
+      }
+      if (!target && gs.length === 1) target = gs[0];
+      if (target && target !== PM.slug) {
+        q0.set("pm_rd", "1");
+        location.replace("/" + target + "/?" + q0.toString() + location.hash);
+        return;
+      }
+      clearTimeout(t); show();
+    }).catch(() => { clearTimeout(t); show(); });
+  })();
+
   // 유입 경로 기억 (광고 꼬리표·이전 페이지). 광고로 다시 들어오면 새 값으로 바뀜, 30일 보관
   const SRC = (() => {
     const q = new URLSearchParams(location.search), g = (k) => (q.get(k) || "").trim();
