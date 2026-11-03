@@ -319,7 +319,7 @@
     let shots = PM.photos.slice(0, 6);
     if (CAT) { const hit = shots.filter((x) => x.cap.includes(CAT === "세면대" ? "싱크대" : CAT)); shots = [...hit, ...shots.filter((x) => !hit.includes(x))]; }  // 작업 장면 6장 (장비 사진은 아래 '실제 작업 현장'에)
     const list = [...shots, ...shots];
-    track.innerHTML = list.map((x, i) => `<figure${i >= shots.length ? ' aria-hidden="true"' : ""}><img src="${x.src}" alt="${x.cap}" loading="lazy"><figcaption>${x.cap}</figcaption></figure>`).join("");
+    track.innerHTML = list.map((x, i) => `<figure${i >= shots.length ? ' aria-hidden="true"' : ""}><img src="${x.src}" alt="${x.cap}" decoding="async"><figcaption>${x.cap}</figcaption></figure>`).join("");
   } else {
     const list = [...SHOTS, ...SHOTS];
     track.innerHTML = list.map((x, i) => `<figure${i >= SHOTS.length ? ' aria-hidden="true"' : ""}><canvas data-k="${x[1]}" data-i="${i % SHOTS.length}" role="img" aria-label="${x[0]} 예시 이미지"></canvas><figcaption>${x[0]}</figcaption></figure>`).join("");

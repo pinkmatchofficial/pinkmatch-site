@@ -26,12 +26,14 @@ p{margin:0}
 .bar{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:14px 0;border-bottom:1px solid var(--line);margin:0 -18px;padding-inline:18px}
 .logo{display:flex;align-items:center;gap:7px;font-weight:700;font-size:17px;color:var(--accent);text-decoration:none}
 .logo .k{color:var(--fg)}
-.reel{overflow:hidden;margin:-14px -18px 0;padding:10px 0;background:var(--accent-softer);border-bottom:1px solid var(--line);-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
-.reel-track{display:flex;gap:8px;width:max-content;animation:reel 38s linear infinite}
+.reel{position:relative;overflow:hidden;margin:-14px -18px 0;padding:10px 0;background:var(--accent-softer);border-bottom:1px solid var(--line);isolation:isolate}
+.reel::before,.reel::after{content:"";position:absolute;top:0;bottom:0;width:24px;z-index:2;pointer-events:none}
+.reel::before{left:0;background:linear-gradient(90deg,var(--accent-softer),transparent)}.reel::after{right:0;background:linear-gradient(270deg,var(--accent-softer),transparent)}
+.reel-track{display:flex;gap:8px;width:max-content;animation:reel 38s linear infinite;will-change:transform;-webkit-backface-visibility:hidden;backface-visibility:hidden;transform:translate3d(0,0,0)}
 .reel figure{margin:0;width:128px;height:96px;border-radius:12px;overflow:hidden;position:relative;flex:none;background:#3a2a2f}
 .reel canvas,.reel img{width:100%;height:100%;display:block;object-fit:cover}
 .reel figcaption{position:absolute;left:6px;bottom:4px;font-size:10.5px;font-weight:600;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.6)}
-@keyframes reel{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes reel{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
 @media(prefers-reduced-motion:reduce){.reel-track{animation-duration:80s}}
 .hero{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
 .badges{display:flex;justify-content:space-between;gap:6px;width:100%;flex-wrap:wrap}
