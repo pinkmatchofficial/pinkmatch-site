@@ -30,7 +30,8 @@
     const q = (q0.get("n_query") || q0.get("utm_term") || "").replace(/\s+/g, "");
     if (!q || q.length < 3) return;
     const mine = [PM.label, PM.gu, (PM.gu || "").replace(/(시|군|구)$/, ""), PM.gu_short].filter((x) => x && x.length >= 2 && x !== "전국");
-    if (mine.some((x) => q.includes(x))) return;  // 검색어에 이 페이지 지역이 있으면 그대로
+    const isSido = !!PM.sido && PM.label === PM.sido;  // 시·도 전체 페이지(부산, 경남 등)는 더 좁은 지역이 있으면 그쪽으로
+    if (!isSido && mine.some((x) => q.includes(x))) return;  // 검색어에 이 페이지 지역이 있으면 그대로
     const de = document.documentElement; de.style.visibility = "hidden";
     const show = () => { de.style.visibility = ""; };
     const t = setTimeout(show, 900);
@@ -38,7 +39,7 @@
       // 업종·작업 단어는 지우고 남은 글자에서만 지역 이름을 찾음 (예: "하수구"의 "하"를 지역으로 착각하지 않게)
       const qr = q.replace(/양변기|좌변기|변기|하수구|하수관|오수관|싱크대|씽크대|세면대|배수구|배관|화장실|욕실|욕조|주방|부엌|베란다|세탁실|막혔을때|막힘|뚫는곳|뚫는업체|뚫어주는곳|뚫음|업체|비용|역류|청소|고압세척|출장|근처|전문|24시/g, "|");
       const hit = (m) => Object.keys(m).filter((k) => k.length >= 2 && qr.includes(k)).sort((a, b) => b.length - a.length);
-      const gk = hit(RG.g); let gs = gk.length ? RG.g[gk[0]] : [];
+      const gk = hit(RG.g).filter((k) => !(isSido && k === PM.sido)); let gs = gk.length ? RG.g[gk[0]] : [];
       if (gs.length > 1) { const narrowed = gk.flatMap((k) => RG.g[k]).filter((v, i, a) => a.indexOf(v) !== i); if (narrowed.length) gs = [narrowed[0]]; }
       let target = "";
       for (const k of hit(RG.d)) {
