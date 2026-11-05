@@ -347,3 +347,10 @@ body.night .mcard .mt b{font-size:24px}
 .mcard:not(.lk){background:linear-gradient(90deg,rgba(20,12,16,.78) 0%,rgba(20,12,16,.55) 55%,rgba(20,12,16,.15) 100%),url(/static/photos/work03.jpg) center 60%/cover no-repeat}
 .mcard:not(.lk)::before{display:none}
 .mcard:not(.lk) .mt b{text-shadow:0 2px 8px rgba(0,0,0,.4)}
+
+/* 누수 페이지: 상단은 분홍 배경 + 모델, 증상 사진(곰팡이·거실 누수) */
+.why .symimg{grid-column:1/-1}
+.why .symimg img{display:block;width:100%;height:auto;border-radius:12px;margin-bottom:10px}
+.leakfig{margin:14px 0 0}
+.leakfig img{display:block;width:100%;height:auto;border-radius:14px}
+.leakfig figcaption{margin-top:8px;font-size:14px;color:var(--muted);line-height:1.5}
