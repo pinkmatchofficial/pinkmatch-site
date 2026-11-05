@@ -2,8 +2,10 @@
 (function () {
   const PM = window.PM;
   const $ = (id) => document.getElementById(id);
-  const REQS = ["변기", "싱크대", "하수구", "세면대", "욕조", "세탁실", "베란다", "기타 (직접 입력)"];
-  const S = { req: "변기", addr: null, token: "", sending: false };
+  const LEAK = !!PM.leak;  // 누수 페이지 (/{지역}/leak/)
+  const REQS = LEAK ? ["바닥·천장 누수", "벽·배관 누수", "변기·수전 주변", "기타 (직접 입력)"]
+                    : ["변기", "싱크대", "하수구", "세면대", "욕조", "세탁실", "베란다", "기타 (직접 입력)"];
+  const S = { req: LEAK ? "바닥·천장 누수" : "변기", addr: null, token: "", sending: false };
 
   function toast(m) { const t = $("toast"); t.textContent = m; t.classList.add("show"); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 2600); }
   function err(m) { const e = $("formErr"); e.textContent = m; e.hidden = !m; }
@@ -37,17 +39,18 @@
     const t = setTimeout(show, 900);
     fetch("/static/rg.json").then((r) => r.json()).then((RG) => {
       // 업종·작업 단어는 지우고 남은 글자에서만 지역 이름을 찾음 (예: "하수구"의 "하"를 지역으로 착각하지 않게)
-      const qr = q.replace(/양변기|좌변기|변기|하수구|하수관|오수관|싱크대|씽크대|세면대|배수구|배관|화장실|욕실|욕조|주방|부엌|베란다|세탁실|막혔을때|막힘|뚫는곳|뚫는업체|뚫어주는곳|뚫음|업체|비용|역류|청소|고압세척|출장|근처|전문|24시/g, "|");
+      const qr = q.replace(/양변기|좌변기|변기|하수구|하수관|오수관|싱크대|씽크대|세면대|배수구|배관|화장실|욕실|욕조|주방|부엌|베란다|세탁실|막혔을때|막힘|뚫는곳|뚫는업체|뚫어주는곳|뚫음|업체|비용|역류|청소|고압세척|출장|근처|전문|24시|누수탐지|누수|탐지|수리/g, "|");
       const hit = (m) => Object.keys(m).filter((k) => k.length >= 2 && qr.includes(k)).sort((a, b) => b.length - a.length);
       const gk = hit(RG.g).filter((k) => !(isSido && k === PM.sido)); let gs = gk.length ? RG.g[gk[0]] : [];
       if (gs.length > 1) { const narrowed = gk.flatMap((k) => RG.g[k]).filter((v, i, a) => a.indexOf(v) !== i); if (narrowed.length) gs = [narrowed[0]]; }
       let target = "";
-      for (const k of hit(RG.d)) {
+      for (const k of (LEAK ? [] : hit(RG.d))) {  // 누수 페이지는 구·시 단위만 (동·역 누수 페이지 없음)
         let c = RG.d[k];
         if (gs.length) c = c.filter(([p, par]) => gs.includes(par) || gs.includes(p));
         if (c.length === 1) { target = c[0][0]; break; }
       }
       if (!target && gs.length === 1) target = gs[0];
+      if (target && LEAK) target += "/leak";
       if (target && target !== PM.slug) {
         q0.set("pm_rd", "1");
         location.replace("/" + target + "/?" + q0.toString() + location.hash);
@@ -89,6 +92,7 @@
   // 검색어 업종 맞춤: 광고 키워드 · 실제 검색어에 업종 단어가 있으면 첫 제목 · 문제 위치 · 사진 순서를 그 업종으로.
   // 고객이 친 글자는 화면에 그대로 쓰지 않고, 미리 정한 문구만 보여줌
   const CAT = (() => {
+    if (LEAK) return null;
     const text = `${SRC.query || ""} ${SRC.kw || ""}`.replace(/\s+/g, "");
     if (!text) return null;
     const RULES = [
