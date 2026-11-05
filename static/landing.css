@@ -342,3 +342,8 @@ body.night .mcard .mt b{font-size:24px}
 .pstrip .pr{margin-left:auto}
 .pstrip .pr span{display:block;font-size:11.5px;font-weight:800;border-radius:10px;padding:5px 9px;text-align:center;line-height:1.3;background:#e9f7ef;color:#1a7f45}
 .hint.center+.center{margin-top:4px}
+
+/* 상단 배경: 실제 현장 사진 (누수 페이지는 기존 분홍 배경) */
+.mcard:not(.lk){background:linear-gradient(90deg,rgba(20,12,16,.78) 0%,rgba(20,12,16,.55) 55%,rgba(20,12,16,.15) 100%),url(/static/photos/work03.jpg) center 60%/cover no-repeat}
+.mcard:not(.lk)::before{display:none}
+.mcard:not(.lk) .mt b{text-shadow:0 2px 8px rgba(0,0,0,.4)}
