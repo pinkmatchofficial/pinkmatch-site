@@ -22,7 +22,7 @@
 <meta name="theme-color" content="#D6336C">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="/static/landing.css?v=1793857600">
+<link rel="stylesheet" href="/static/landing.css?v=1793948904">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" href="/static/icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/static/apple-touch-icon.png">
@@ -39,8 +39,8 @@ window.PM_GADS={lead:"AW-18539425069/FHmXCMH8u6wdEK3apIhF",call:"AW-18539425069/
   </header>
 
   <div class="mcard" aria-label="핑크배관">
-    <div class="mt"><b data-night="오전 6시부터<br>가장 먼저 연락">어디가 막혀도<br>확실하고 빠르게</b>
-      <div class="bd"><span class="y">최저가 보장</span><span class="w">출장비 0원</span><span class="g">전국 출장</span></div></div>
+    <div class="mt"><b id="heroBig" data-night="오전 6시부터<br>가장 먼저 연락"><span id="hbArea">문산읍</span><br><span id="hbCat">배관 막힘,</span><br>30분 내 방문</b>
+      <div class="bd"><span class="y">최저가 보장</span><span class="w">출장비 0원</span></div></div>
     <img src="/static/model_tech.webp" alt="" fetchpriority="high">
   </div>
 
@@ -48,8 +48,8 @@ window.PM_GADS={lead:"AW-18539425069/FHmXCMH8u6wdEK3apIhF",call:"AW-18539425069/
 
   <section class="hero">
     <div class="badges"><span class="b1">24시간 접수</span><span class="b2">배관 문의 누적 3,000건+</span></div>
-    <h1><span data-night="문산읍, 문의 남겨주시면">문산읍, 30분 내 출동 가능</span><br><span id="heroSub" data-night="원하는 시간에 연락드릴게요.">오늘 바로 뚫어드려요</span></h1>
-    <p class="lead"><b>작업 전에 투명한 비용 안내,</b><br><b class="nofix">해결하지 못하면 비용을 받지 않아요.</b></p>
+    <h1 class="v2"><span class="nw" data-night="문의 남겨주시면">지금 문의 시 30분 내 출동 가능.</span><br><span id="heroSub" data-night="원하는 시간에 연락드릴게요.">오늘 바로 뚫어드려요.</span></h1>
+    <p class="lead"><b>비싸지 않아요. 작업 전 투명한 비용 안내,</b><br><b class="nofix">해결하지 못하면 비용을 받지 않아요.</b></p>
   </section>
 
   <div id="lateNotice" class="notice live" hidden><b>🚨 지금도 출동 가능해요!</b> 늦은 시간에도 가까운 기사님이 바로 찾아갑니다. 지금 전화 주세요.</div>
@@ -69,6 +69,13 @@ window.PM_GADS={lead:"AW-18539425069/FHmXCMH8u6wdEK3apIhF",call:"AW-18539425069/
   </div>
   <div class="reel mid" aria-label="실제 작업 사진"><div class="reel-track" id="reelTrack"></div></div>
   
+  <section class="sec" aria-labelledby="riskT"><h2 id="riskT">배관 막힘, 그냥 두면 이렇게 돼요</h2>
+    <div class="why risk">
+      <div><i aria-hidden="true">💧</i><b>역류 위험이 커져요</b><span>막힌 채로 물을 내리면 오수가 넘쳐 바닥과 다른 배관까지 오염될 수 있어요.</span></div>
+      <div><i aria-hidden="true">👃</i><b>냄새가 집 전체로</b><span>고인 물이 오래되면 화장실을 넘어 집 안 전체로 냄새가 퍼져요.</span></div>
+      <div><i aria-hidden="true">🧱</i><b>바닥·타일까지 손상</b><span>넘친 물이 스며들면 타일이 들뜨고 곰팡이가 생길 수 있어요.</span></div>
+      <div><i aria-hidden="true">📈</i><b>고치는 비용이 늘어요</b><span>초기에 뚫으면 간단하지만, 오래 두면 배관 작업이 커져요.</span></div>
+    </div><p class="center" style="margin-top:12px"><a class="btn" href="tel:07080153674">📞 지금 바로 전화하기</a></p></section>
 
   <div id="formTop"></div>
   
@@ -125,17 +132,14 @@ window.PM_GADS={lead:"AW-18539425069/FHmXCMH8u6wdEK3apIhF",call:"AW-18539425069/
   <div id="formBox">
 
   <section class="card soft" id="formCard" aria-labelledby="formT">
-    <span id="form" class="anchor"></span><h2 id="formT" class="form-h" data-night="야간 접수">상담 접수하기</h2><p class="small muted night-only" style="margin:-6px 0 0">오전 6시부터, 원하시는 시간에 맞춰 연락드려요.</p>
+    <span id="form" class="anchor"></span><h2 id="formT" class="form-h" data-night="야간 접수">30초면 신청 끝</h2><p class="small muted night-only" style="margin:-6px 0 0">오전 6시부터, 원하시는 시간에 맞춰 연락드려요.</p>
     
     <div class="safe"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span class="small"><b>번호는 상담 연락에만 쓰여요</b><br><span class="muted">광고 문자나 다른 용도로는 쓰지 않아요. 상담이 끝나면 정해진 기간 뒤 지워집니다.</span></span></div>
     
     <form id="leadForm" novalidate>
-      <label><span>주소 <span class="opt">(선택 · 통화 때 알려주셔도 돼요)</span></span>
-        <input id="fAddr" readonly placeholder="눌러서 주소 검색 (문산읍 도로명·건물명)">
-      </label>
-      <div id="postLayer" class="post" hidden><div class="between"><b class="small">주소 검색</b><button type="button" class="btn sm ghost" id="postClose">닫기</button></div><div id="postWrap"></div></div>
-      <div id="addrPick" hidden></div>
-      <label id="addr2Wrap" hidden>상세 주소 (선택)<input id="fAddr2" maxlength="100" placeholder="101동 1203호" autocomplete="off"></label>
+      <label><span>지역·동 이름 <span class="opt">(정확한 주소는 통화로 확인해요)</span></span><input id="fArea" value="경남 진주시 문산읍" maxlength="40" autocomplete="off"></label>
+      <div hidden><input id="fAddr" readonly><div id="postLayer" hidden><button type="button" id="postClose"></button><div id="postWrap"></div></div><div id="addrPick"></div><input id="fAddr2"></div>
+      
       <div>
         <span class="hint" id="reqLabel">문제가 되는 곳을 선택해주세요</span>
         <div class="chips" id="reqChips" role="group" aria-labelledby="reqLabel"></div>
@@ -202,7 +206,7 @@ window.PM_GADS={lead:"AW-18539425069/FHmXCMH8u6wdEK3apIhF",call:"AW-18539425069/
 <div class="toast" id="toast" role="status"></div>
 <script>window.PM={"slug": "gyeongnam-jinju/munsaneup", "label": "문산읍", "sido": "경남", "gu": "진주시", "gu_short": "문산읍", "category": "배관", "api": "https://app.pinkmatch.kr", "preview": false, "closed": false, "verify": false, "hours": [6, 1], "photos": [{"src": "/static/photos/work01.jpg", "cap": "출동 차량 장비"}, {"src": "/static/photos/work02.jpg", "cap": "변기 막힘 작업"}, {"src": "/static/photos/work03.jpg", "cap": "하수구 배관 작업"}, {"src": "/static/photos/work04.jpg", "cap": "싱크대 배관 작업"}, {"src": "/static/photos/work05.jpg", "cap": "배관 내시경 확인"}, {"src": "/static/photos/work06.jpg", "cap": "전문 관통 장비"}, {"src": "/static/photos/work07.jpg", "cap": "내시경 장비 점검"}, {"src": "/static/photos/work08.jpg", "cap": "배수로 점검"}, {"src": "/static/photos/work09.jpg", "cap": "플렉스샤프트 장비"}, {"src": "/static/photos/work10.jpg", "cap": "현장 장비 세팅"}]};</script>
 <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js" defer></script>
-<script src="/static/landing.js?v=1793857600" defer></script>
+<script src="/static/landing.js?v=1793948904" defer></script>
 <!-- 네이버 광고 전환추적 (wcs.trans) -->
 <script src="https://wcs.naver.net/wcslog.js"></script>
 <script>window.PM_NWA=["s_55a7d498e1cb"];

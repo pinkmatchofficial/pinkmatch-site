@@ -110,15 +110,11 @@
     const mine = [PM.label, PM.gu, PM.gu.replace(/(시|군|구)$/, ""), PM.gu_short].filter((x) => x && x.length >= 2);
     return mine.some((x) => q.includes(x)) ? null : PM.sido;
   })();
-  if (AREA && !CAT) {
-    const first = document.querySelector(".hero h1 span[data-night]:not(#heroSub)");
-    if (first) { first.textContent = `${AREA}, 30분 내 출동 가능`; first.dataset.night = `${AREA}, 문의 남겨주시면`; }
-  }
+  // 사진 위 큰 제목: {지역} {업종}막힘, 30분 내 방문 (검색어에 맞춤)
+  if (AREA && $("hbArea")) $("hbArea").textContent = AREA;
   if (CAT) {
-    const h1 = document.querySelector(".hero h1"), first = h1 && h1.querySelector("span[data-night]:not(#heroSub)");
-    const area = AREA || ((PM.gu || PM.slug.startsWith("st/")) ? (PM.gu_short || "") : "");
-    if (first) first.textContent = `${area ? area + " " : ""}${CAT}막힘,`;
-    if ($("heroSub")) $("heroSub").textContent = "30분 내 바로 출동해요";
+    if ($("hbCat")) $("hbCat").textContent = `${CAT}막힘,`;
+    if ($("riskT")) $("riskT").textContent = `${CAT}막힘, 그냥 두면 이렇게 돼요`;
     S.req = CAT;
   }
   // 구글 광고 전환 (라벨이 설정된 것만)
@@ -269,7 +265,8 @@
     e.preventDefault();
     if (S.sending) return;
     // 지역 페이지는 주소 없이도 접수 (그 페이지 지역으로 배정, 상세 주소는 통화로)
-    const addr = S.addr || (PM.sido && PM.gu ? { sido: PM.sido, sigungu: PM.gu, dong: "", addr: "" } : null);
+    const area = $("fArea") ? $("fArea").value.trim() : "";
+    const addr = S.addr || (PM.sido && PM.gu ? { sido: PM.sido, sigungu: PM.gu, dong: "", addr: area } : null);
     if (!addr) { err("주소를 검색해서 선택해주세요."); return; }
     if (S.req.startsWith("기타") && !$("fMemo").value.trim()) { err("어떤 문제인지 적어주세요."); return; }
     if (!$("fAgree").checked) { err("개인정보 수집·이용 및 제공에 동의해주세요."); return; }
