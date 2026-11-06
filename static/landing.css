@@ -357,3 +357,4 @@ body.night .mcard .mt b{font-size:24px}
 /* v2 막힘 페이지 */
 .hero h1.v2{font-size:clamp(18px,5.7vw,30px);letter-spacing:-.6px}
 .why.risk i{font-size:22px;display:flex;align-items:center;justify-content:center;font-style:normal}
+.call-mid{margin:4px 0 22px}
