@@ -358,3 +358,20 @@ body.night .mcard .mt b{font-size:24px}
 .hero h1.v2{font-size:clamp(18px,5.7vw,30px);letter-spacing:-.6px}
 .why.risk i{font-size:22px;display:flex;align-items:center;justify-content:center;font-style:normal}
 .call-mid{margin:4px 0 22px}
+/* 서비스 지역: 구 → 동·역 */
+.foot-areas .rgu{white-space:nowrap}
+.foot-areas .rgu>summary{list-style:none;display:inline;cursor:pointer;color:var(--muted);text-decoration:none}
+.foot-areas .rgu>summary::after{text-decoration:none;display:inline-block}
+.foot-areas .rgu>summary::-webkit-details-marker{display:none}
+.foot-areas .rgu:not(:last-child)>summary::after,.foot-areas .rlist>a:not(:last-child)::after{content:"·";color:var(--line);margin:0 5px;font-weight:700}
+.foot-areas .rgu[open]{flex-basis:100%;white-space:normal}
+.foot-areas .rgu[open]>summary{color:var(--accent-deep);font-weight:700}
+.foot-areas .rkids{margin:4px 0 8px;padding:8px 10px;background:var(--accent-softer);border-radius:8px;line-height:1.85;font-size:12.5px}
+.foot-areas .rkids b{display:block;font-size:11.5px;color:var(--fg);margin-top:6px}
+.foot-areas .rkids a{color:var(--fg);text-decoration:none;white-space:nowrap}
+.foot-areas .rkids a.rall::after{content:none!important}
+.foot-areas .rkids .rk a:not(:last-child)::after{content:"·"!important;color:var(--line);margin:0 5px;font-weight:700}
+.foot-areas .rkids .rk{display:block}
+.foot-areas .rkids a.rall{display:inline-block;font-weight:700;color:var(--accent-deep)}
+.foot-areas .rkids a[aria-current]{color:var(--accent-deep);font-weight:700}
+.foot-areas .rhome{margin:6px 0 0;font-size:12px}

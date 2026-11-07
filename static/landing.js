@@ -82,6 +82,9 @@
   })();
 
   // 유입 경로 기억 (광고 꼬리표·이전 페이지). 광고로 다시 들어오면 새 값으로 바뀜, 30일 보관
+  // 첫 화면 문구 맞춤은 이번 방문 주소에 붙은 값만 씀 (예전에 기억한 광고 검색어로 바꾸지 않음)
+  const CURQ = (() => { const u = new URLSearchParams(location.search), g = (k) => (u.get(k) || "").trim();
+    return { query: g("n_query"), kw: g("n_keyword") || g("utm_term") || g("keyword") }; })();
   const SRC = (() => {
     const q = new URLSearchParams(location.search), g = (k) => (q.get(k) || "").trim();
     let saved = null; try { saved = JSON.parse(localStorage.getItem("pm_src") || "null"); } catch (e) {}
@@ -114,7 +117,7 @@
   // 고객이 친 글자는 화면에 그대로 쓰지 않고, 미리 정한 문구만 보여줌
   const CAT = (() => {
     if (LEAK) return null;
-    const text = `${SRC.query || ""} ${SRC.kw || ""}`.replace(/\s+/g, "");
+    const text = `${CURQ.query} ${CURQ.kw}`.replace(/\s+/g, "");
     if (!text) return null;
     const RULES = [
       ["세면대", /세면대|세면기|세숫대|새면대/], ["싱크대", /싱크|씽크|싱쿠|씽쿠|싱끄|씽끄|주방|부엌|개수대|설거지/],
@@ -127,9 +130,9 @@
   const METRO = ["서울", "부산", "대구", "인천", "광주", "대전", "울산"];
   const AREA = (() => {
     // 실제 검색어나 광고 키워드 중 하나라도 이 페이지 지역(동·구)이 있으면 이 페이지 지역 그대로 (예: 진관동변기막힘 키워드 → 진관동)
-    const q = (SRC.query || "").replace(/\s+/g, "");
+    const q = CURQ.query.replace(/\s+/g, "");
     if (!q || !PM.gu || !METRO.includes(PM.sido)) return null;
-    const kw = (SRC.kw || "").replace(/\s+/g, "");
+    const kw = CURQ.kw.replace(/\s+/g, "");
     const mine = [PM.label, (PM.label || "").replace(/역$/, ""), PM.gu, PM.gu.replace(/(시|군|구)$/, ""), PM.gu_short].filter((x) => x && x.length >= 2);  // 역 페이지는 '역' 없이도
     return mine.some((x) => q.includes(x) || kw.includes(x)) ? null : PM.sido;
   })();
