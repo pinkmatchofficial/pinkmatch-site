@@ -36,9 +36,9 @@
     const isSub = PM.slug.includes("/");  // 동·역 페이지
     // 동·역 페이지인데 검색어나 키워드에 이 동·역 이름이 있으면 그대로
     if (isSub && PM.label && (q.includes(PM.label) || kw0.includes(PM.label) || q.includes(PM.label.replace(/역$/, "")))) return;
-    const de = document.documentElement; de.style.visibility = "hidden";
-    const show = () => { de.style.visibility = ""; };
-    const t = setTimeout(show, 900);
+    // 화면은 가리지 않음: 바로 보여주고, 동·역 페이지로 옮겨야 할 때만 옮김
+    const show = () => {};
+    const t = 0;
     fetch("/static/rg.json").then((r) => r.json()).then((RG) => {
       // 업종·작업 단어는 지우고 남은 글자에서만 지역 이름을 찾음 (예: "하수구"의 "하"를 지역으로 착각하지 않게)
       const clean = (t) => t.replace(/양변기|좌변기|변기|하수구|하수관|오수관|싱크대|씽크대|세면대|배수구|배관|화장실|욕실|욕조|주방|부엌|베란다|세탁실|막혔을때|막힘|뚫는곳|뚫는업체|뚫어주는곳|뚫음|업체|비용|역류|청소|고압세척|출장|근처|전문|24시|누수탐지|누수|탐지|수리/g, "|");
