@@ -128,14 +128,7 @@
   })();
   // 광역시 구·동 페이지인데 검색어에 이 지역 이름이 없으면(지역 없는 검색 · 도시 전체 노출) 제목 지역을 도시 이름으로
   const METRO = ["서울", "부산", "대구", "인천", "광주", "대전", "울산"];
-  const AREA = (() => {
-    // 실제 검색어나 광고 키워드 중 하나라도 이 페이지 지역(동·구)이 있으면 이 페이지 지역 그대로 (예: 진관동변기막힘 키워드 → 진관동)
-    const q = CURQ.query.replace(/\s+/g, "");
-    if (!q || !PM.gu || !METRO.includes(PM.sido)) return null;
-    const kw = CURQ.kw.replace(/\s+/g, "");
-    const mine = [PM.label, (PM.label || "").replace(/역$/, ""), PM.gu, PM.gu.replace(/(시|군|구)$/, ""), PM.gu_short].filter((x) => x && x.length >= 2);  // 역 페이지는 '역' 없이도
-    return mine.some((x) => q.includes(x) || kw.includes(x)) ? null : PM.sido;
-  })();
+  const AREA = null;  // 지역 제목은 들어온 페이지 지역 그대로 (검색어에 지역이 없어도 '서울' 같은 도시 이름으로 바꾸지 않음)
   // 사진 위 큰 제목: {지역} {업종}막힘, 30분 내 방문 (검색어에 맞춤)
   if (AREA && $("hbArea")) $("hbArea").textContent = AREA;
   if (CAT) {
