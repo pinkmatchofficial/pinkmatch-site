@@ -30,24 +30,39 @@
     const q0 = new URLSearchParams(location.search);
     if (q0.get("pm_rd")) return;
     const q = (q0.get("n_query") || q0.get("utm_term") || "").replace(/\s+/g, "");
-    if (!q || q.length < 3) return;
-    const mine = [PM.label, PM.gu, (PM.gu || "").replace(/(시|군|구)$/, ""), PM.gu_short].filter((x) => x && x.length >= 2 && x !== "전국");
+    const kw0 = (q0.get("n_keyword") || "").replace(/\s+/g, "");
+    if ((!q || q.length < 3) && kw0.length < 3) return;
     const isSido = !!PM.sido && PM.label === PM.sido;  // 시·도 전체 페이지(부산, 경남 등)는 더 좁은 지역이 있으면 그쪽으로
-    if (!isSido && mine.some((x) => q.includes(x))) return;  // 검색어에 이 페이지 지역이 있으면 그대로
+    const isSub = PM.slug.includes("/");  // 동·역 페이지
+    // 동·역 페이지인데 검색어나 키워드에 이 동·역 이름이 있으면 그대로
+    if (isSub && PM.label && (q.includes(PM.label) || kw0.includes(PM.label) || q.includes(PM.label.replace(/역$/, "")))) return;
     const de = document.documentElement; de.style.visibility = "hidden";
     const show = () => { de.style.visibility = ""; };
     const t = setTimeout(show, 900);
     fetch("/static/rg.json").then((r) => r.json()).then((RG) => {
       // 업종·작업 단어는 지우고 남은 글자에서만 지역 이름을 찾음 (예: "하수구"의 "하"를 지역으로 착각하지 않게)
-      const qr = q.replace(/양변기|좌변기|변기|하수구|하수관|오수관|싱크대|씽크대|세면대|배수구|배관|화장실|욕실|욕조|주방|부엌|베란다|세탁실|막혔을때|막힘|뚫는곳|뚫는업체|뚫어주는곳|뚫음|업체|비용|역류|청소|고압세척|출장|근처|전문|24시|누수탐지|누수|탐지|수리/g, "|");
+      const clean = (t) => t.replace(/양변기|좌변기|변기|하수구|하수관|오수관|싱크대|씽크대|세면대|배수구|배관|화장실|욕실|욕조|주방|부엌|베란다|세탁실|막혔을때|막힘|뚫는곳|뚫는업체|뚫어주는곳|뚫음|업체|비용|역류|청소|고압세척|출장|근처|전문|24시|누수탐지|누수|탐지|수리/g, "|");
+      const qr = clean(q);
       const hit = (m) => Object.keys(m).filter((k) => k.length >= 2 && qr.includes(k)).sort((a, b) => b.length - a.length);
       const gk = hit(RG.g).filter((k) => !(isSido && k === PM.sido)); let gs = gk.length ? RG.g[gk[0]] : [];
       if (gs.length > 1) { const narrowed = gk.flatMap((k) => RG.g[k]).filter((v, i, a) => a.indexOf(v) !== i); if (narrowed.length) gs = [narrowed[0]]; }
       let target = "";
-      for (const k of (LEAK ? [] : hit(RG.d))) {  // 누수 페이지는 구·시 단위만 (동·역 누수 페이지 없음)
-        let c = RG.d[k];
-        if (gs.length) c = c.filter(([p, par]) => gs.includes(par) || gs.includes(p));
-        if (c.length === 1) { target = c[0][0]; break; }
+      // 같은 이름 동이 여러 곳이면(남외동: 울산 중구·나주) 지금 들어온 광고 페이지 지역 안의 동을 고름
+      const base = PM.slug.split("/")[0];
+      const inHere = (c) => c.filter(([p, par]) => par === base || (isSido && (par || p).startsWith(base + "-")));
+      const findDong = (text) => {
+        const hd = (m) => Object.keys(m).filter((k) => k.length >= 2 && text.includes(k)).sort((a, b) => b.length - a.length);
+        for (const k of (LEAK ? [] : hd(RG.d))) {  // 누수 페이지는 구·시 단위만 (동·역 누수 페이지 없음)
+          let c = RG.d[k];
+          if (gs.length) c = c.filter(([p, par]) => gs.includes(par) || gs.includes(p));
+          if (c.length > 1) { const h = inHere(c); if (h.length) c = h; }
+          if (c.length === 1) return c[0][0];
+        }
+        return "";
+      };
+      target = findDong(qr);
+      if (!target) {  // 검색어에 동 이름이 없으면 광고 키워드에서 (예: 키워드 진관동변기막힘 · 검색어 변기막힘)
+        if (kw0) target = findDong(clean(kw0));
       }
       if (!target && gs.length === 1) target = gs[0];
       if (target && LEAK) target += "/leak";
