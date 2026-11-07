@@ -35,7 +35,10 @@
     const isSido = !!PM.sido && PM.label === PM.sido;  // 시·도 전체 페이지(부산, 경남 등)는 더 좁은 지역이 있으면 그쪽으로
     const isSub = PM.slug.includes("/");  // 동·역 페이지
     // 동·역 페이지인데 검색어나 키워드에 이 동·역 이름이 있으면 그대로
-    if (isSub && PM.label && (q.includes(PM.label) || kw0.includes(PM.label) || q.includes(PM.label.replace(/역$/, "")))) return;
+    // 단, 역 페이지인데 검색어에 같은 이름의 '동'이 있으면(마곡역 페이지 · 검색어 마곡동) 동 페이지를 찾으러 감
+    const stem = (PM.label || "").replace(/역$/, "");
+    const wantsDong = /역$/.test(PM.label || "") && stem.length >= 2 && q.includes(stem + "동");
+    if (isSub && PM.label && !wantsDong && (q.includes(PM.label) || kw0.includes(PM.label) || q.includes(stem))) return;
     // 화면은 가리지 않음: 바로 보여주고, 동·역 페이지로 옮겨야 할 때만 옮김
     const show = () => {};
     const t = 0;
