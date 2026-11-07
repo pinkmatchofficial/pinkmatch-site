@@ -43,24 +43,30 @@
       // 업종·작업 단어는 지우고 남은 글자에서만 지역 이름을 찾음 (예: "하수구"의 "하"를 지역으로 착각하지 않게)
       const clean = (t) => t.replace(/양변기|좌변기|변기|하수구|하수관|오수관|싱크대|씽크대|세면대|배수구|배관|화장실|욕실|욕조|주방|부엌|베란다|세탁실|막혔을때|막힘|뚫는곳|뚫는업체|뚫어주는곳|뚫음|업체|비용|역류|청소|고압세척|출장|근처|전문|24시|누수탐지|누수|탐지|수리/g, "|");
       const qr = clean(q);
-      const hit = (m) => Object.keys(m).filter((k) => k.length >= 2 && qr.includes(k)).sort((a, b) => b.length - a.length);
-      const gk = hit(RG.g).filter((k) => !(isSido && k === PM.sido)); let gs = gk.length ? RG.g[gk[0]] : [];
-      if (gs.length > 1) { const narrowed = gk.flatMap((k) => RG.g[k]).filter((v, i, a) => a.indexOf(v) !== i); if (narrowed.length) gs = [narrowed[0]]; }
-      let target = "";
-      // 같은 이름 동이 여러 곳이면(남외동: 울산 중구·나주) 지금 들어온 광고 페이지 지역 안의 동을 고름
+      const gHits = (text) => {  // 글자 안의 구·시 이름 → 그 지역 경로들
+        const gk = Object.keys(RG.g).filter((k) => k.length >= 2 && text.includes(k) && !(isSido && k === PM.sido)).sort((a, b) => b.length - a.length);
+        let g = gk.length ? RG.g[gk[0]] : [];
+        if (g.length > 1) { const nw = gk.flatMap((k) => RG.g[k]).filter((v, i, a) => a.indexOf(v) !== i); if (nw.length) g = [nw[0]]; }
+        return g;
+      };
+      const gs = gHits(qr);
       const base = PM.slug.split("/")[0];
+      const sidoKey = isSido ? base : base.split("-")[0];  // seoul-eunpyeong → seoul
       const inHere = (c) => c.filter(([p, par]) => par === base || (isSido && (par || p).startsWith(base + "-")));
+      const sameSido = (c) => c.filter(([p, par]) => (par || p).split("-")[0] === sidoKey);
+      // 동·역 이름 찾기: 글자에 구·시 이름이 있으면 그 안에서, 없으면 지금 들어온 지역 → 같은 시·도 안에서만 (다른 시·도로는 넘기지 않음)
       const findDong = (text) => {
-        const hd = (m) => Object.keys(m).filter((k) => k.length >= 2 && text.includes(k)).sort((a, b) => b.length - a.length);
-        for (const k of (LEAK ? [] : hd(RG.d))) {  // 누수 페이지는 구·시 단위만 (동·역 누수 페이지 없음)
+        const g = gHits(text);
+        const keys = Object.keys(RG.d).filter((k) => k.length >= 2 && text.includes(k) && !RG.g[k]).sort((a, b) => b.length - a.length);  // 구·시 이름과 같은 글자(안양·성동 등)는 동으로 보지 않음
+        for (const k of (LEAK ? [] : keys)) {  // 누수 페이지는 구·시 단위만 (동·역 누수 페이지 없음)
           let c = RG.d[k];
-          if (gs.length) c = c.filter(([p, par]) => gs.includes(par) || gs.includes(p));
-          if (c.length > 1) { const h = inHere(c); if (h.length) c = h; }
+          if (g.length) c = c.filter(([p, par]) => g.includes(par) || g.includes(p));
+          else { const h = inHere(c); c = h.length ? h : sameSido(c); }
           if (c.length === 1) return c[0][0];
         }
         return "";
       };
-      target = findDong(qr);
+      let target = findDong(qr);
       if (!target) {  // 검색어에 동 이름이 없으면 광고 키워드에서 (예: 키워드 진관동변기막힘 · 검색어 변기막힘)
         if (kw0) target = findDong(clean(kw0));
       }
@@ -124,7 +130,7 @@
     const q = (SRC.query || "").replace(/\s+/g, "");
     if (!q || !PM.gu || !METRO.includes(PM.sido)) return null;
     const kw = (SRC.kw || "").replace(/\s+/g, "");
-    const mine = [PM.label, PM.gu, PM.gu.replace(/(시|군|구)$/, ""), PM.gu_short].filter((x) => x && x.length >= 2);
+    const mine = [PM.label, (PM.label || "").replace(/역$/, ""), PM.gu, PM.gu.replace(/(시|군|구)$/, ""), PM.gu_short].filter((x) => x && x.length >= 2);  // 역 페이지는 '역' 없이도
     return mine.some((x) => q.includes(x) || kw.includes(x)) ? null : PM.sido;
   })();
   // 사진 위 큰 제목: {지역} {업종}막힘, 30분 내 방문 (검색어에 맞춤)
