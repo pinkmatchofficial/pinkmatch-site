@@ -375,3 +375,11 @@ body.night .mcard .mt b{font-size:24px}
 .foot-areas .rkids a.rall{display:inline-block;font-weight:700;color:var(--accent-deep)}
 .foot-areas .rkids a[aria-current]{color:var(--accent-deep);font-weight:700}
 .foot-areas .rhome{margin:6px 0 0;font-size:12px}
+
+/* 업종별 첫 화면 배경 사진 */
+.mcard.s-toilet{background:linear-gradient(90deg,rgba(20,12,16,.78) 0%,rgba(20,12,16,.55) 55%,rgba(20,12,16,.15) 100%),url(/static/photos/bg_toilet.jpg) 30% 70%/auto 135% no-repeat}
+.mcard.s-sink{background:linear-gradient(90deg,rgba(20,12,16,.78) 0%,rgba(20,12,16,.55) 55%,rgba(20,12,16,.15) 100%),url(/static/photos/bg_sink.jpg) 20% 75%/auto 140% no-repeat}
+.mcard.s-drain{background:linear-gradient(90deg,rgba(20,12,16,.78) 0%,rgba(20,12,16,.55) 55%,rgba(20,12,16,.15) 100%),url(/static/photos/bg_drain.jpg) center 60%/cover no-repeat}
+.mcard.s-thaw{background:linear-gradient(90deg,rgba(20,12,16,.6) 0%,rgba(20,12,16,.4) 55%,rgba(20,12,16,.1) 100%),url(/static/photos/bg_thaw.jpg) 0% 30%/auto 115% no-repeat}
+.mcard.lk.s-leak{background:linear-gradient(90deg,rgba(20,12,16,.72) 0%,rgba(20,12,16,.5) 55%,rgba(20,12,16,.12) 100%),url(/static/photos/bg_leak.jpg) center 30%/cover no-repeat}
+.mcard.lk.s-leak::before{display:none}
