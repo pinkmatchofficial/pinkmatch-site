@@ -387,3 +387,5 @@ body.night .mcard .mt b{font-size:24px}
 .pstrip .pl small{color:#5e4a52;font-size:12px;font-weight:800}
 .pstrip .pl b em{color:#2a1820;font-size:14px;font-weight:900}
 .pstrip .pr span{font-size:12px}
+/* 참고 가격 바로 아래 전화 버튼 숨김 */
+section[aria-labelledby="priceT"] + .call-mid{display:none}
