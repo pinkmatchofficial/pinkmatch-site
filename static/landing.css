@@ -383,3 +383,7 @@ body.night .mcard .mt b{font-size:24px}
 .mcard.s-thaw{background:linear-gradient(90deg,rgba(20,12,16,.6) 0%,rgba(20,12,16,.4) 55%,rgba(20,12,16,.1) 100%),url(/static/photos/bg_thaw.jpg) 0% 30%/auto 115% no-repeat}
 .mcard.lk.s-leak{background:linear-gradient(90deg,rgba(20,12,16,.72) 0%,rgba(20,12,16,.5) 55%,rgba(20,12,16,.12) 100%),url(/static/photos/bg_leak.jpg) center 30%/cover no-repeat}
 .mcard.lk.s-leak::before{display:none}
+/* 가격 띠: 다크 모드에서도 글자가 흰 바탕에 잘 보이게 고정 색 */
+.pstrip .pl small{color:#5e4a52;font-size:12px;font-weight:800}
+.pstrip .pl b em{color:#2a1820;font-size:14px;font-weight:900}
+.pstrip .pr span{font-size:12px}
