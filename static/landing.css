@@ -389,3 +389,10 @@ body.night .mcard .mt b{font-size:24px}
 .pstrip .pr span{font-size:12px}
 /* 참고 가격 바로 아래 전화 버튼 숨김 */
 section[aria-labelledby="priceT"] + .call-mid{display:none}
+
+.foot-areas .rkd{margin-top:4px}
+.foot-areas .rkd summary{text-decoration:none;cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--fg);padding:4px 0}
+.foot-areas .rkd summary::-webkit-details-marker{display:none}
+.foot-areas .rkd summary i{text-decoration:none;font-style:normal;font-weight:500;color:var(--muted)}
+.foot-areas .rkd summary::after{content:"";width:6px;height:6px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);margin:-3px 0 0 2px}
+.foot-areas .rkd[open] summary::after{transform:rotate(-135deg);margin-top:3px}
