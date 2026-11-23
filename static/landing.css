@@ -396,3 +396,20 @@ section[aria-labelledby="priceT"] + .call-mid{display:none}
 .foot-areas .rkd summary i{text-decoration:none;font-style:normal;font-weight:500;color:var(--muted)}
 .foot-areas .rkd summary::after{content:"";width:6px;height:6px;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);margin:-3px 0 0 2px}
 .foot-areas .rkd[open] summary::after{transform:rotate(-135deg);margin-top:3px}
+
+/* 2026-11-23 전화 버튼 크게 + 모션 (핑크배관) */
+.dock .in:not(.one){grid-template-columns:minmax(0,2.3fr) minmax(0,1fr)}
+.dock .d-call{position:relative;overflow:hidden;min-height:62px;padding:12px 10px;font-size:19px;font-weight:800;letter-spacing:-.3px;gap:8px;animation:pbHalo 2s ease-out infinite,pbNudge 3.2s ease-in-out infinite}
+.dock .d-call svg{width:24px;height:24px;flex:none;animation:pbRing 1.6s ease-in-out infinite;transform-origin:50% 50%}
+.dock .d-call::after{content:"";position:absolute;top:-10%;bottom:-10%;left:-40%;width:30%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);animation:pbShine 3.2s ease-in-out infinite;pointer-events:none}
+.dock .d-form{min-height:62px;font-size:16px}
+.call2{padding:16px 16px;animation:pbHalo 2s ease-out infinite}
+.call2 .c2-t b{font-size:24px;letter-spacing:-.4px}
+.call2 .c2-t small{font-size:14px}
+.call2 .c2-ic svg{width:28px;height:28px;animation:pbRing 1.6s ease-in-out infinite;transform-origin:50% 50%}
+.call2::before{animation:c2shine 3.2s ease-in-out infinite}
+@keyframes pbHalo{0%{box-shadow:0 0 0 0 rgba(214,51,108,.55)}75%{box-shadow:0 0 0 10px rgba(214,51,108,0)}100%{box-shadow:0 0 0 0 rgba(214,51,108,0)}}
+@keyframes pbNudge{0%,70%,100%{transform:scale(1)}76%{transform:scale(1.045)}82%{transform:scale(.985)}88%{transform:scale(1.02)}94%{transform:scale(1)}}
+@keyframes pbRing{0%,50%,100%{transform:rotate(0)}55%{transform:rotate(-16deg)}60%{transform:rotate(14deg)}65%{transform:rotate(-10deg)}70%{transform:rotate(8deg)}75%{transform:rotate(0)}}
+@keyframes pbShine{0%,45%{left:-40%}75%,100%{left:120%}}
+@media (prefers-reduced-motion:reduce){.dock .d-call,.dock .d-call svg,.dock .d-call::after,.call2,.call2 .c2-ic svg,.call2::before{animation:none}}
