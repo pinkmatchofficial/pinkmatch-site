@@ -413,3 +413,6 @@ section[aria-labelledby="priceT"] + .call-mid{display:none}
 @keyframes pbRing{0%,50%,100%{transform:rotate(0)}55%{transform:rotate(-16deg)}60%{transform:rotate(14deg)}65%{transform:rotate(-10deg)}70%{transform:rotate(8deg)}75%{transform:rotate(0)}}
 @keyframes pbShine{0%,45%{left:-40%}75%,100%{left:120%}}
 @media (prefers-reduced-motion:reduce){.dock .d-call,.dock .d-call svg,.dock .d-call::after,.call2,.call2 .c2-ic svg,.call2::before{animation:none}}
+
+/* 2026-11-24 누수 랜딩: 받지 않는 문의 안내 */
+.scope-note{margin:10px auto 0;max-width:420px;padding:9px 12px;border-radius:10px;background:#fff4f7;border:1px solid #f6c9d8;color:#7a2645;font-size:13.5px;line-height:1.5;text-align:center;word-break:keep-all}
