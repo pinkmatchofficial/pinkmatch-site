@@ -55,13 +55,13 @@
     // 단, 역 페이지인데 검색어에 같은 이름의 '동'이 있으면(마곡역 페이지 · 검색어 마곡동) 동 페이지를 찾으러 감
     const stem = (PM.label || "").replace(/역$/, "");
     const wantsDong = /역$/.test(PM.label || "") && stem.length >= 2 && q.includes(stem + "동");
-    if (isSub && PM.label && !wantsDong && (q.includes(PM.label) || kw0.includes(PM.label) || q.includes(stem))) return;
+    if (isSub && PM.label && !wantsDong && (q.includes(PM.label) || kw0.includes(PM.label))) return;  // 역 페이지에 '역' 없이(마곡) 들어오면 같은 이름 동(마곡동)이 있는지 아래에서 찾음
     // 화면은 가리지 않음: 바로 보여주고, 동·역 페이지로 옮겨야 할 때만 옮김
     const show = () => {};
     const t = 0;
     fetch("/static/rg.json").then((r) => r.json()).then((RG) => {
       // 업종·작업 단어는 지우고 남은 글자에서만 지역 이름을 찾음 (예: "하수구"의 "하"를 지역으로 착각하지 않게)
-      const clean = (t) => t.replace(/양변기|좌변기|변기|하수구|하수관|오수관|싱크대|씽크대|세면대|배수구|배관|화장실|욕실|욕조|주방|부엌|베란다|세탁실|막혔을때|막힘|뚫는곳|뚫는업체|뚫어주는곳|뚫음|업체|비용|역류|청소|고압세척|출장|근처|전문|24시|누수탐지|누수|탐지|수리|수도관|수도|동파|해빙|계량기|얼었을때|얼음|녹이기|온수/g, "|");
+      const clean = (t) => t.replace(/뚫어뻥|뚤어뻥|뚫어펑|양변기|좌변기|변기|하수구|하수관|오수관|싱크대|씽크대|세면대|배수구|배관|화장실|욕실|욕조|주방|부엌|베란다|세탁실|막혔을때|막힘|뚫는곳|뚫는업체|뚫어주는곳|뚫음|업체|비용|역류|청소|고압세척|출장|근처|전문|24시|누수탐지|누수|탐지|수리|수도관|수도|동파|해빙|계량기|얼었을때|얼음|녹이기|온수/g, "|");
       const qr = clean(q);
       const gHits = (text) => {  // 글자 안의 구·시 이름 → 그 지역 경로들
         const gk = Object.keys(RG.g).filter((k) => k.length >= 2 && text.includes(k) && !(isSido && k === PM.sido)).sort((a, b) => b.length - a.length);
@@ -157,6 +157,16 @@
     if ($("hbCat")) $("hbCat").textContent = `${CAT}막힘,`;
     if ($("riskT")) $("riskT").textContent = `${CAT}막힘, 그냥 두면 이렇게 돼요`;
     S.req = CAT;
+  }
+  // 별칭(건대·홍대·DMC 등)으로 검색해서 들어오면 첫 화면 지역 이름도 별칭으로 (예: 화양동 페이지 → "건대")
+  {
+    const qq = `${CURQ.query} ${CURQ.kw}`.replace(/\s+/g, "").toLowerCase();
+    const al = (PM.alias || []).filter((a) => qq && qq.includes(a.toLowerCase())).sort((a, b) => b.length - a.length)[0];
+    if (al && !qq.includes((PM.label || "").toLowerCase())) {
+      if ($("hbArea")) $("hbArea").textContent = al;
+      const hl0 = document.querySelector("header.bar .small.muted");
+      if (hl0 && PM.label) hl0.textContent = hl0.textContent.replace(PM.label, al);
+    }
   }
   // 첫 화면 배경 사진: 검색어 업종(변기·싱크대·하수구)과 누수 페이지에 맞춰 (업종 페이지는 이미 고정 사진)
   {
